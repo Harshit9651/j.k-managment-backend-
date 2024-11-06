@@ -3,15 +3,15 @@ const app = express();
 const axios = require('axios')
 const path = require('path')
 const cors = require('cors');
-require('../connection/connections')
+require('./connection/connections')
 
 
 
 
 
 const bodyparser = require('body-parser');
-const EmployeRoute = require('../routes/employe')
-const PurchaseRoute = require('../routes/purchaseroute')
+const EmployeRoute = require('./routes/employe')
+const PurchaseRoute = require('./routes/purchaseroute')
 
 
 
