@@ -30,5 +30,5 @@ app.listen(3000 ,()=>{
     console.log('app listen at port number 3000')
 })
 app.get('/',(req,res)=>{
-    res.render('sidebar.ejs')
+    res.send('api work correctly')
 })
