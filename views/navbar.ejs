@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <!-- Add Bootstrap and Font Awesome for icons -->
+ 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <style>.header {
+    background-color: #ff7f50; /* Replace $primary-orange */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Replace $box-shadow */
+    padding: 20px 0;
+    transition: background-color 0.3s ease;
+  }
+  
+  .navbar-brand img {
+    max-height: 40px;
+    transition: transform 0.3s ease;
+  }
+  .navbar-brand img:hover {
+    transform: scale(1.1);
+  }
+  
+  .container {
+    width: 100vw;
+    justify-content: space-between;
+  }
+  
+  .nav-link {
+    color: #ffffff; /* Replace $text-light */
+    font-weight: 600;
+    border-radius: 50px;
+    border: 1px solid #ffffff;
+    padding: 10px;
+    margin: 10px;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  .nav-link:hover {
+    color: #ffa07a; /* Replace $primary-orange-light */
+    transform: translateY(-3px);
+  }
+  
+  .btn-outline-light {
+    border-color: #ffffff;
+    color: #ffffff;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+  }
+  .btn-outline-light:hover {
+    background-color: #ffffff;
+    color: #ff7f50;
+    transform: scale(1.05);
+  }
+  
+  .div1 {
+    display: flex;
+    flex-direction: row;
+    padding: 0px 15px;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .nav-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .nav-buttons .btn {
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 15px;
+    padding: 10px 20px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+  .nav-buttons .btn:hover {
+    background-color: #ffa07a;
+    color: #ff7f50;
+  }
+  </style>
+</head>
+<body>
+  <nav class="header">
+    <div class="div1">
+      <div class="d-flex align-items-center">
+        <button
+          class="btn btn-outline-light me-2"
+          onclick="toggleSidebar()"
+          id="sidebar-toggle-btn"
+        >
+          <!-- <i class="<%= isOpen ? 'fas fa-times' : 'fas fa-bars' %>"></i> -->
+        </button>
+        <a href="/" class="navbar-brand">
+          <img
+            src="/logo.png"
+            alt="Company Logo"
+            height="30"
+            class="d-inline-block align-top"
+          />
+        </a>
+      </div>
+
+      <div class="ms-auto nav-buttons">
+        <a href="/login" class="btn btn-outline-light me-2">Log in</a>
+        <a href="/" class="btn btn-outline-light">Home</a>
+      </div>
+    </div>
+  </nav>
+
+  <script>
+    // Toggle sidebar visibility
+    function toggleSidebar() {
+      const sidebarToggleBtn = document.getElementById("sidebar-toggle-btn");
+      sidebarToggleBtn.classList.toggle("open");
+    }
+  </script>
+</body>
+</html>
