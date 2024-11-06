@@ -14,7 +14,8 @@ exports.createOrder = async (req, res) => {
     });
 
     // Save the order to the database
-    await newOrder.save();
+   const sellorderdata =  await newOrder.save();
+   console.log(sellorderdata)
 
     // Respond with success
     res.status(200).json({ message: 'Order submitted successfully', order: newOrder });
