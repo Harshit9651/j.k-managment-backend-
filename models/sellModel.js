@@ -13,7 +13,7 @@ const sellSchema = new mongoose.Schema({
     }
   ],
   totalPayment: { type: Number, required: true },
-});
+}, { timestamps: true });
 
 const Sell = mongoose.model('Order', sellSchema);
 
