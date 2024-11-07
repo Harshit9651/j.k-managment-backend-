@@ -47,3 +47,33 @@ app.use('/Sell',SellRoute)
 app.get('/',(req,res)=>{
     res.send('api work correctly')
 })
+const mustardOildkhatabook = require('./models/cuttonCakeKhataModel');
+
+app.get('/all', async (req, res) => {
+  try {
+    const uniqueCustomers = await mustardOildkhatabook.aggregate([
+      {
+        $group: {
+          _id: "$customerName",  // Group by customer name
+          latestOrder: { $first: "$$ROOT" },  // Get the first document in each group
+        }
+      },
+      {
+        $replaceRoot: { newRoot: "$latestOrder" }  // Replace the root with the grouped document
+      }
+    ]);
+    res.send(uniqueCustomers);
+  } catch (error) {
+    console.error('Error fetching unique customers:', error);
+    res.status(500).send('Error fetching customers');
+  }
+});
+app.get('/name', async (req, res) => {
+  try {
+    const user = await mustardOildkhatabook.find({ customerName: "raju" });
+    res.send(user);
+  } catch (error) {
+    console.error('Error fetching customer data:', error);
+    res.status(500).send('Error fetching customer data');
+  }
+});
