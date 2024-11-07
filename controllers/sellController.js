@@ -48,7 +48,6 @@ exports.createOrder = async (req, res) => {
         paymentStatus: 'Unpaid',
       });
 
-      // Save the khata entry
       const savedKhata = await newKhata.save();
       console.log(`Khata entry saved for ${product.name}:`, savedKhata);
     }
@@ -60,6 +59,51 @@ exports.createOrder = async (req, res) => {
   } catch (error) {
     console.error('Error submitting order:', error);
     res.status(500).json({ message: 'Error occurred while submitting the order.' });
+  }
+};
+
+
+
+
+exports.getMustardOilKhata = async (req, res) => {
+  try {
+    const khataEntries = await MustardOilKhata.find();
+    return res.status(200).json(khataEntries);
+  } catch (error) {
+    console.error('Error fetching Mustard Oil Khata entries:', error);
+    return res.status(500).json({ message: 'Error fetching Mustard Oil Khata entries.' });
+  }
+};
+
+
+exports.getCottonCakeKhata = async (req, res) => {
+  try {
+    const khataEntries = await CuttonCakeKhata.find();
+    return res.status(200).json(khataEntries);
+  } catch (error) {
+    console.error('Error fetching Cotton Cake Khata entries:', error);
+    return res.status(500).json({ message: 'Error fetching Cotton Cake Khata entries.' });
+  }
+};
+
+exports.getRawMustardKhata = async (req, res) => {
+  try {
+    const khataEntries = await RawMustardKhata.find();
+    return res.status(200).json(khataEntries);
+  } catch (error) {
+    console.error('Error fetching Raw Mustard Khata entries:', error);
+    return res.status(500).json({ message: 'Error fetching Raw Mustard Khata entries.' });
+  }
+};
+
+
+exports.getRawCottonKhata = async (req, res) => {
+  try {
+    const khataEntries = await RawCottonKhata.find();
+    return res.status(200).json(khataEntries);
+  } catch (error) {
+    console.error('Error fetching Raw Cotton Khata entries:', error);
+    return res.status(500).json({ message: 'Error fetching Raw Cotton Khata entries.' });
   }
 };
 
