@@ -68,9 +68,10 @@ app.get('/all', async (req, res) => {
     res.status(500).send('Error fetching customers');
   }
 });
+ const cutton = require('./models/cuttonCakeKhataModel')
 app.get('/name', async (req, res) => {
   try {
-    const user = await mustardOildkhatabook.find({ customerName: "raju" });
+    const user = await cutton.find({ customerName: "andu" });
     res.send(user);
   } catch (error) {
     console.error('Error fetching customer data:', error);
