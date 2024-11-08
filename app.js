@@ -51,30 +51,11 @@ const mustardOildkhatabook = require('./models/cuttonCakeKhataModel');
 
 app.get('/all', async (req, res) => {
   try {
-    const uniqueCustomers = await mustardOildkhatabook.aggregate([
-      {
-        $group: {
-          _id: "$customerName",  // Group by customer name
-          latestOrder: { $first: "$$ROOT" },  // Get the first document in each group
-        }
-      },
-      {
-        $replaceRoot: { newRoot: "$latestOrder" }  // Replace the root with the grouped document
-      }
-    ]);
+    const uniqueCustomers = await mustardOildkhatabook.find({})
+   
     res.send(uniqueCustomers);
   } catch (error) {
     console.error('Error fetching unique customers:', error);
     res.status(500).send('Error fetching customers');
-  }
-});
- const cutton = require('./models/cuttonCakeKhataModel')
-app.get('/name', async (req, res) => {
-  try {
-    const user = await cutton.find({ customerName: "andu" });
-    res.send(user);
-  } catch (error) {
-    console.error('Error fetching customer data:', error);
-    res.status(500).send('Error fetching customer data');
   }
 });
