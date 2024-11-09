@@ -11,6 +11,11 @@ const RawCottonKhataSchema = new mongoose.Schema(
         quantity: { type: Number, required: true },
         pricePerUnit: { type: Number, required: true },
         ttlprice: { type: Number, required: true },
+        billNumber: {
+          type: String,
+          required: true,
+          unique: true,
+        },
         paymentStatus: {
           type: String,
           enum: ["Paid", "Unpaid"],

@@ -6,5 +6,6 @@ router.get("/mustardOilKhata", SellController.getMustardOilKhata);
 router.get("/cottonCakeKhata", SellController.getCottonCakeKhata);
 router.get("/rawMustardKhata", SellController.getRawMustardKhata);
 router.get("/rawCottonKhata", SellController.getRawCottonKhata);
+router.delete("/rawMustardKhata/:customerId", SellController.deleteCustomer_RowOfMustard);
 
 module.exports = router;

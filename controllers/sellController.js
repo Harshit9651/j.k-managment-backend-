@@ -18,6 +18,9 @@ exports.createOrder = async (req, res) => {
     console.log("Order saved in Selldata:", savedOrder);
 
     for (let product of products) {
+      const receiptNumber = `BILL-${Date.now()}-${Math.floor(
+        Math.random() * 1000
+      )}`;
       const productType = product.name.toLowerCase();
       let KhataModel;
 
@@ -34,7 +37,7 @@ exports.createOrder = async (req, res) => {
         continue;
       }
 
-      // Check if the customer already has an existing Khata entry
+    
       let existingKhata = await KhataModel.findOne({ customerName });
 
       const productEntry = {
@@ -44,6 +47,7 @@ exports.createOrder = async (req, res) => {
         pricePerUnit: product.pricePerUnit,
         ttlprice: product.pricePerUnit * product.quantity,
         paymentStatus: "Unpaid",
+        billNumber: receiptNumber
       };
 
       if (!existingKhata) {
@@ -117,5 +121,22 @@ exports.getRawCottonKhata = async (req, res) => {
     return res
       .status(500)
       .json({ message: "Error fetching Raw Cotton Khata entries." });
+  }
+};
+
+
+
+
+// delete data from khatas 
+exports.deleteCustomer_RowOfMustard = async (req, res) => {
+  console.log('data comming')
+  try {
+    const { customerId } = req.params;
+   const deletedCustomer= await RawMustardKhata.findByIdAndDelete(customerId);
+   console.log(deletedCustomer)
+    res.status(200).json({ message: "Customer deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting customer:", error);
+    res.status(500).json({ message: "Error deleting customer" });
   }
 };
