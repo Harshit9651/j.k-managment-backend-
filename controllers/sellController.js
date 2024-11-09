@@ -37,7 +37,6 @@ exports.createOrder = async (req, res) => {
         continue;
       }
 
-    
       let existingKhata = await KhataModel.findOne({ customerName });
 
       const productEntry = {
@@ -47,7 +46,7 @@ exports.createOrder = async (req, res) => {
         pricePerUnit: product.pricePerUnit,
         ttlprice: product.pricePerUnit * product.quantity,
         paymentStatus: "Unpaid",
-        billNumber: receiptNumber
+        billNumber: receiptNumber,
       };
 
       if (!existingKhata) {
@@ -124,23 +123,55 @@ exports.getRawCottonKhata = async (req, res) => {
   }
 };
 
+// exports.FetchCustomer = async(req,res)=>{
+//   const { customerId, productType } = req.params;
+// console.log(customerId,productType)
 
-exports.FetchCustomer = async(req,res)=>{
+//   let Model;
+//   switch (productType.toLowerCase()) {
+//     case 'mustardoil':
+//       Model = MustardOilKhata;
+//       break;
+//     case 'cuttoncake':
+//       Model = CuttonCakeKhata;
+//       break;
+//     case 'rowofmustard':
+//       Model = RawMustardKhata;
+//       break;
+//     case 'rowofcotton':
+//       Model = RawCottonKhata;
+//       break;
+//     default:
+//       return res.status(400).json({ message: "Invalid product type" });
+//   }
+
+//   try {
+//     console.log("hello")
+//     const customerOrders = await Model.findOne({ _id: customerId }).lean();
+//     console.log(customerOrders)
+//     res.status(200).json(customerOrders);
+//   } catch (error) {
+//     console.error("Error fetching customer orders:", error);
+//     res.status(500).json({ message: "Error fetching customer orders" });
+//   }
+// }
+
+exports.FetchCustomer = async (req, res) => {
   const { customerId, productType } = req.params;
-console.log(customerId,productType)
+  console.log(customerId, productType);
 
   let Model;
   switch (productType.toLowerCase()) {
-    case 'mustardoil':
+    case "mustardoil":
       Model = MustardOilKhata;
       break;
-    case 'cuttoncake':
+    case "cuttoncake":
       Model = CuttonCakeKhata;
       break;
-    case 'rowofmustard':
+    case "rowofmustard":
       Model = RawMustardKhata;
       break;
-    case 'rowofcotton':
+    case "rowofcotton":
       Model = RawCottonKhata;
       break;
     default:
@@ -148,36 +179,53 @@ console.log(customerId,productType)
   }
 
   try {
-    console.log("hello")
+    console.log("hello");
     const customerOrders = await Model.findOne({ _id: customerId }).lean();
-    console.log(customerOrders)
-    res.status(200).json(customerOrders);
+
+    if (!customerOrders) {
+      return res.status(404).json({ message: "Customer not found" });
+    }
+
+    // Calculate the total price of all products
+    const totalPrice = customerOrders.products.reduce(
+      (acc, product) => acc + product.ttlprice,
+      0
+    );
+    console.log(totalPrice);
+
+    const response = {
+      ...customerOrders,
+      totalPrice,
+    };
+
+    console.log(response);
+    res.status(200).json(response);
   } catch (error) {
     console.error("Error fetching customer orders:", error);
     res.status(500).json({ message: "Error fetching customer orders" });
   }
-}
+};
 
 exports.updatePaymentStatus = async (req, res) => {
   const { recordId, productType } = req.params;
   const { paymentStatus } = req.body;
 
-  console.log(`customerId is ${recordId}`)
-  console.log(`product Type is ${productType}`)
-  console.log(`status is ${paymentStatus}`)
+  console.log(`customerId is ${recordId}`);
+  console.log(`product Type is ${productType}`);
+  console.log(`status is ${paymentStatus}`);
   // Determine the model based on the product type
   let Model;
   switch (productType.toLowerCase()) {
-    case 'mustardoil':
+    case "mustardoil":
       Model = MustardOilKhata;
       break;
-    case 'cuttoncake':
+    case "cuttoncake":
       Model = CuttonCakeKhata;
       break;
-    case 'rowofmustard':
+    case "rowofmustard":
       Model = RawMustardKhata;
       break;
-    case 'rowofcotton':
+    case "rowofcotton":
       Model = RawCottonKhata;
       break;
     default:
@@ -185,7 +233,6 @@ exports.updatePaymentStatus = async (req, res) => {
   }
 
   try {
-
     const updatedRecord = await Model.findByIdAndUpdate(
       recordId,
       { paymentStatus },
@@ -196,35 +243,32 @@ exports.updatePaymentStatus = async (req, res) => {
       return res.status(404).json({ message: "Record not found" });
     }
 
-    res.status(200).json({ message: "Payment status updated successfully", updatedRecord });
+    res
+      .status(200)
+      .json({ message: "Payment status updated successfully", updatedRecord });
   } catch (error) {
     console.error("Error updating payment status:", error);
     res.status(500).json({ message: "Error updating payment status" });
   }
 };
 
-
-
-
-// delete data from khatas 
+// delete data from khatas
 exports.deleteCustomer_RowOfMustard = async (req, res) => {
-  
   try {
     const { customerId } = req.params;
-   const deletedCustomer= await RawMustardKhata.findByIdAndDelete(customerId);
-   console.log(deletedCustomer)
+    const deletedCustomer = await RawMustardKhata.findByIdAndDelete(customerId);
+    console.log(deletedCustomer);
     res.status(200).json({ message: "Customer deleted successfully" });
   } catch (error) {
     console.error("Error deleting customer:", error);
     res.status(500).json({ message: "Error deleting customer" });
   }
 };
-exports.deleteCustomer_RowOfCutton= async (req, res) => {
-  
+exports.deleteCustomer_RowOfCutton = async (req, res) => {
   try {
     const { customerId } = req.params;
-   const deletedCustomer= await RawCottonKhata.findByIdAndDelete(customerId);
-   console.log(deletedCustomer)
+    const deletedCustomer = await RawCottonKhata.findByIdAndDelete(customerId);
+    console.log(deletedCustomer);
     res.status(200).json({ message: "Customer deleted successfully" });
   } catch (error) {
     console.error("Error deleting customer:", error);
@@ -232,23 +276,21 @@ exports.deleteCustomer_RowOfCutton= async (req, res) => {
   }
 };
 exports.deleteCustomer_MustardOil = async (req, res) => {
-  
   try {
     const { customerId } = req.params;
-   const deletedCustomer= await MustardOilKhata.findByIdAndDelete(customerId);
-   console.log(deletedCustomer)
+    const deletedCustomer = await MustardOilKhata.findByIdAndDelete(customerId);
+    console.log(deletedCustomer);
     res.status(200).json({ message: "Customer deleted successfully" });
   } catch (error) {
     console.error("Error deleting customer:", error);
     res.status(500).json({ message: "Error deleting customer" });
   }
 };
-exports.deleteCustomer_CuttonCakeKhata= async (req, res) => {
-  
+exports.deleteCustomer_CuttonCakeKhata = async (req, res) => {
   try {
     const { customerId } = req.params;
-   const deletedCustomer= await CuttonCakeKhata.findByIdAndDelete(customerId);
-   console.log(deletedCustomer)
+    const deletedCustomer = await CuttonCakeKhata.findByIdAndDelete(customerId);
+    console.log(deletedCustomer);
     res.status(200).json({ message: "Customer deleted successfully" });
   } catch (error) {
     console.error("Error deleting customer:", error);
