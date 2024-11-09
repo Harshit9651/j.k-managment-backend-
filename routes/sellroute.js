@@ -6,4 +6,5 @@ router.get("/mustardOilKhata", SellController.getMustardOilKhata);
 router.get("/cottonCakeKhata", SellController.getCottonCakeKhata);
 router.get("/rawMustardKhata", SellController.getRawMustardKhata);
 router.get("/rawCottonKhata", SellController.getRawCottonKhata);
+
 module.exports = router;
