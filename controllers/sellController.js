@@ -149,7 +149,7 @@ console.log(customerId,productType)
 
   try {
     console.log("hello")
-    const customerOrders = await Model.find({ _id:customerId  }).populate('products');
+    const customerOrders = await Model.findOne({ _id: customerId }).lean();
     console.log(customerOrders)
     res.status(200).json(customerOrders);
   } catch (error) {
