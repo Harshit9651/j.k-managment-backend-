@@ -4,7 +4,7 @@ const Employee = require('../models/employeeModel')
         try {
             
             const {
-                name
+                name,
                 panNumber,
                 panImage,
                 aadharNumber,
