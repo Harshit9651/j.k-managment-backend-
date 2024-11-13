@@ -18,9 +18,11 @@ const CuttonCakekhataSchema = new mongoose.Schema(
         },
         paymentStatus: {
           type: String,
-          enum: ["Paid", "Unpaid"],
+          enum: ["Paid", "Unpaid", "Partially Paid"],
           required: true,
         },
+        creditPaid: { type: Number, default: 0 }, 
+        remainingAmount: { type: Number, default: 0 },
       },
     ],
   },

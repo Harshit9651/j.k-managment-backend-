@@ -18,7 +18,7 @@ const RawMustardKhataSchema = new mongoose.Schema(
         },
         paymentStatus: {
           type: String,
-          enum: ["Paid", "Unpaid"],
+          enum: ["Paid", "Unpaid", "Partially Paid"],
           required: true,
         },
       },
