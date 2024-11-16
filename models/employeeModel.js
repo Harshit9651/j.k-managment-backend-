@@ -48,15 +48,10 @@ const employeeSchema = new Schema({
         minlength: [10, 'Address should have at least 10 characters'],
         maxlength: [250, 'Address cannot exceed 250 characters']
     },
-    familyDetails: {
-        contactNumbers: {
-            type: [String],
-            validate: {
-                validator: (value) => value.length >= 2,
-                message: 'At least two family contact numbers are required'
-            },
-            match: [/^\d{10}$/, 'Each contact number must be a valid 10-digit number']
-        }
+    familyMemberNumber: {
+        type: String,
+        required: [true, 'Family member contact number is required'],
+        match: [/^\d{10}$/, 'Family member number must be a valid 10-digit number']
     },
     employeeContactNumber: {
         type: String,
