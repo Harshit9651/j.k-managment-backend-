@@ -68,8 +68,8 @@ const { cloudinary, upload } = require('../middleware/multer');
       });
   
       // Save the employee in the database
-      await newEmployee.save();
-  
+    const data =  await newEmployee.save();
+  console.log(data)
       res.status(201).json({ message: 'Employee added successfully', data: newEmployee });
     } catch (error) {
       console.error('Error adding employee:', error);
