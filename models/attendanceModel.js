@@ -22,7 +22,7 @@ const attendanceSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["Full Day", "Half Day", "Absent"],
+      enum: ["Full Day", "Half Leave", "Absent"],
       required: [true, "Attendance status is required"],
     },
   },

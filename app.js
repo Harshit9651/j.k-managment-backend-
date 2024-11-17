@@ -63,7 +63,8 @@ app.get('/all', async (req, res) => {
     res.status(500).send('Error fetching customers');
   }
 });
-const {upload} = require('./middleware/multer')
-// app.post('/data',upload.none(),(req,res)=>{
-//   console.log(req.body);
-// })
+const employe = require('./models/employeeModel');
+app.get('/alldata',async(req,res)=>{
+  const data = await employe.find({});
+  res.send(data)
+})
