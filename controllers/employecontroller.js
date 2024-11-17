@@ -88,6 +88,10 @@ const { cloudinary, upload } = require('../middleware/multer');
     if (!id || !status || !date) {
       return res.status(400).json({ message: "Missing required fields" });
     }
+    if(status === 'other'){
+      return res.status(400).json({ message: "Missing required fields" });
+   
+    }
 
     try {
       const employee = await Employee.findById(id);
@@ -133,6 +137,89 @@ const { cloudinary, upload } = require('../middleware/multer');
 
 
 
+
+
+
+// Helper function to get the number of working days in a month
+const getWorkingDaysInMonth = (month, year) => {
+  let workingDays = 0;
+  // November has 30 days, but this can be adjusted for any month
+  for (let day = 1; day <= 30; day++) {
+    const date = new Date(year, month - 1, day);
+    const dayOfWeek = date.getDay(); // 0 = Sunday, 6 = Saturday
+    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+      workingDays++;
+    }
+  }
+  return workingDays;
+};
+
+// Calculate salary for each employee based on their attendance in November 2024
+const calculateSalary = async () => {
+  const month = 11; // November
+  const year = 2024;
+  const salaryPerMonth = 30000;
+  const workingDaysInMonth = getWorkingDaysInMonth(month, year); // Assuming weekdays are working days
+
+  // Get all employees
+  const employees = await Employee.find();
+
+  const salaryDetails = [];
+
+  for (let employee of employees) {
+    // Fetch attendance for the employee in November 2024
+    const attendance = await Attendance.find({
+      employee: employee._id,
+      date: {
+        $gte: new Date(year, month - 1, 1), // Start date: November 1st
+        $lt: new Date(year, month, 1), // End date: December 1st
+      },
+    });
+
+    // Calculate present days and half-days
+    let presentDays = 0;
+    let halfDays = 0;
+    let absentDays = 0;
+
+    attendance.forEach((entry) => {
+      if (entry.status === "Full Day") {
+        presentDays++;
+      } else if (entry.status === "Half Leave") {
+        halfDays++;
+      } else if (entry.status === "Absent") {
+        absentDays++;
+      }
+    });
+
+    // Calculate the salary for the employee
+    const salary = calculateEmployeeSalary(presentDays, halfDays, workingDaysInMonth, salaryPerMonth);
+
+    salaryDetails.push({
+      employeeName: employee.name,
+      presentDays,
+      halfDays,
+      absentDays,
+      salary,
+    });
+  }
+
+  return salaryDetails;
+};
+
+// Helper function to calculate employee salary based on their attendance
+const calculateEmployeeSalary = (presentDays, halfDays, workingDays, salaryPerMonth) => {
+  const fullDaySalary = salaryPerMonth / workingDays; // Daily salary for full days
+  const halfDaySalary = fullDaySalary / 2; // Salary for half days
+
+  const totalSalary = (presentDays * fullDaySalary) + (halfDays * halfDaySalary);
+
+  return totalSalary;
+};
+
+// Example usage
+calculateSalary().then((salaryDetails) => {
+  console.log(salaryDetails);
+});
 
 
 
