@@ -46,6 +46,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/purchase',PurchaseRoute)
 app.use('/Sell',SellRoute)
+app.use('/Employe',EmployeRoute)
 
 app.get('/',(req,res)=>{
     res.send('api work correctly')
@@ -62,3 +63,7 @@ app.get('/all', async (req, res) => {
     res.status(500).send('Error fetching customers');
   }
 });
+const {upload} = require('./middleware/multer')
+// app.post('/data',upload.none(),(req,res)=>{
+//   console.log(req.body);
+// })

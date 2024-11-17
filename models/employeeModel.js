@@ -15,28 +15,28 @@ const employeeSchema = new Schema({
         unique: true,
         match: [/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/, 'Invalid PAN number format']
     },
-    panImage: {
-        type: String,
-        required: [true, 'PAN card image is required'],
-        validate: {
-            validator: (value) => typeof value === 'string',
-            message: 'PAN card image must be a valid string URL'
-        }
-    },
+    // panImage: {
+    //     type: String,
+    //     required: [true, 'PAN card image is required'],
+    //     validate: {
+    //         validator: (value) => typeof value === 'string',
+    //         message: 'PAN card image must be a valid string URL'
+    //     }
+    // },
     aadharNumber: {
         type: String,
         required: [true, 'Aadhar number is required'],
         unique: true,
         match: [/^\d{12}$/, 'Aadhar number must be a 12-digit number']
     },
-    aadharImage: {
-        type: String,
-        required: [true, 'Aadhar card image is required'],
-        validate: {
-            validator: (value) => typeof value === 'string',
-            message: 'Aadhar card image must be a valid string URL'
-        }
-    },
+    // aadharImage: {
+    //     type: String,
+    //     required: [true, 'Aadhar card image is required'],
+    //     validate: {
+    //         validator: (value) => typeof value === 'string',
+    //         message: 'Aadhar card image must be a valid string URL'
+    //     }
+    // },
     accountNumber: {
         type: String,
         required: [true, 'Account number is required'],
@@ -51,7 +51,7 @@ const employeeSchema = new Schema({
     familyMemberNumber: {
         type: String,
         required: [true, 'Family member contact number is required'],
-        match: [/^\d{10}$/, 'Family member number must be a valid 10-digit number']
+       
     },
     employeeContactNumber: {
         type: String,
