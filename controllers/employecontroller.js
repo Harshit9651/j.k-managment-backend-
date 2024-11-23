@@ -296,67 +296,7 @@ const attendance = await Attendance.find({
   };
   
 
-  // exports.saveSalaryDetails = async (req, res) => {
-  //   try {
-  //     const { 
-  //       month, 
-  //       year, 
-  //       EmployeId, 
-  //       paymentStatus, 
-  //       creditedAmount, 
-  //       remainingAmount, 
-  //       totalPresentDays, 
-  //       totalHalfDays, 
-  //       calculatedSalary 
-  //     } = req.body;
-  
-  //     if (!month || !year || !EmployeId) {
-  //       return res.status(400).json({ error: 'Missing required fields.' });
-  //     }
-  
-  //     const employee = await Employee.findById(EmployeId);
-  //     if (!employee) {
-  //       return res.status(404).json({ error: 'Employee not found.' });
-  //     }
-  
-  //     let salaryRecord = await Salary.findOne({ employee: EmployeId, month, year });
-  
-  //     if (salaryRecord) {
-     
-  //       salaryRecord.paymentStatus = paymentStatus || salaryRecord.paymentStatus;
-  //       salaryRecord.creditedAmount = creditedAmount || salaryRecord.creditedAmount;
-  //       salaryRecord.remainingAmount = remainingAmount || salaryRecord.remainingAmount;
-  //       salaryRecord.totalPresentDays = totalPresentDays || salaryRecord.totalPresentDays;
-  //       salaryRecord.totalHalfDays = totalHalfDays || salaryRecord.totalHalfDays;
-  //       salaryRecord.calculatedSalary = calculatedSalary || salaryRecord.calculatedSalary;
-  
-  //     const updatedSelery =   await salaryRecord.save();
-  //     console.log(updatedSelery);
-  //     } else {
-  //       salaryRecord = new Salary({
-  //         employee: EmployeId,
-  //         month,
-  //         year,
-  //         totalWorkingDays: 30,
-  //         totalPresentDays,
-  //         totalHalfDays,
-  //         calculatedSalary,
-  //         paymentStatus: paymentStatus || 'Unpaid',
-  //         creditedAmount: creditedAmount || 0,
-  //         remainingAmount: remainingAmount || calculatedSalary,
-  //       });
-  
-  //      const newSelerydata =  await salaryRecord.save();
-  //      console.log(newSelerydata)
-  //     }
-  
-  //     return res.status(201).json({ message: 'Salary details saved successfully.', data: salaryRecord });
-  //   } catch (error) {
-  //     console.error('Error saving salary details:', error);
-  //     return res.status(500).json({ error: 'Failed to save salary details.' });
-  //   }
-  // };
-  exports.saveSalaryDetails = async (req, res) => {
+ exports.saveSalaryDetails = async (req, res) => {
     try {
       let { 
         month, 
@@ -423,4 +363,13 @@ const attendance = await Attendance.find({
       return res.status(500).json({ error: 'Failed to save salary details.' });
     }
   };
+
+
+// abhi thodi der bad karnge
+
+  exports.SeleryRecord = async(req,res)=>{
+    const selery = await Salary.find({});
+    console.log(selery)
+    res.send(selery);
+  }
   
