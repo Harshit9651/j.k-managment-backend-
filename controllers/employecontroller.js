@@ -372,4 +372,26 @@ const attendance = await Attendance.find({
     console.log(selery)
     res.send(selery);
   }
+
+  exports.RenderEmploye = async (req,res)=>{
+    const { department } = req.query; 
+    console.log(department)
+
+    if (!department) {
+      return res.status(400).json({ error: "Department is required" });
+    }
+  
+    try {
+      // const allEmploye = await Employee.find({});
+      // console.log(allEmploye)
+    
+      const employees = await Employee.find({ department });
+      console.log(employees)
+      res.json(employees);
+      
+    } catch (error) {
+      console.error("Error fetching employees:", error);
+      res.status(500).json({ error: "Failed to fetch employees" });
+    }
+  }
   

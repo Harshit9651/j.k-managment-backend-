@@ -7,6 +7,7 @@ const { upload } = require("../middleware/multer");
 
 router.get("/AllEmploye",EmployeeController.AllEmployee)
 router.get("/seleryData",EmployeeController.SeleryRecord);
+router.get("/RenderEmploye",EmployeeController.RenderEmploye)
 
 
 router.post("/AddEmployee",upload.none(),EmployeeController.addEmployee);
