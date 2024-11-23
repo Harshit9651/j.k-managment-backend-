@@ -20,4 +20,6 @@ router.put('/customerpayment/:customerId/:productType',SellController.updatePaym
 
 
 
+
+
 module.exports = router;
