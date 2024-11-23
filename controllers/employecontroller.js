@@ -1,5 +1,6 @@
 const Employee = require("../models/employeeModel");
 const Attendance = require("../models/attendanceModel")
+const Salary = require('../models/seleryModel')
 const { cloudinary, upload } = require('../middleware/multer');
 
 
@@ -295,12 +296,131 @@ const attendance = await Attendance.find({
   };
   
 
+  // exports.saveSalaryDetails = async (req, res) => {
+  //   try {
+  //     const { 
+  //       month, 
+  //       year, 
+  //       EmployeId, 
+  //       paymentStatus, 
+  //       creditedAmount, 
+  //       remainingAmount, 
+  //       totalPresentDays, 
+  //       totalHalfDays, 
+  //       calculatedSalary 
+  //     } = req.body;
   
-exports.selerydata =  async (req,res)=>{
-console.log(req.body)
-res.status(200).send("ok")
-}
-
-
+  //     if (!month || !year || !EmployeId) {
+  //       return res.status(400).json({ error: 'Missing required fields.' });
+  //     }
   
-
+  //     const employee = await Employee.findById(EmployeId);
+  //     if (!employee) {
+  //       return res.status(404).json({ error: 'Employee not found.' });
+  //     }
+  
+  //     let salaryRecord = await Salary.findOne({ employee: EmployeId, month, year });
+  
+  //     if (salaryRecord) {
+     
+  //       salaryRecord.paymentStatus = paymentStatus || salaryRecord.paymentStatus;
+  //       salaryRecord.creditedAmount = creditedAmount || salaryRecord.creditedAmount;
+  //       salaryRecord.remainingAmount = remainingAmount || salaryRecord.remainingAmount;
+  //       salaryRecord.totalPresentDays = totalPresentDays || salaryRecord.totalPresentDays;
+  //       salaryRecord.totalHalfDays = totalHalfDays || salaryRecord.totalHalfDays;
+  //       salaryRecord.calculatedSalary = calculatedSalary || salaryRecord.calculatedSalary;
+  
+  //     const updatedSelery =   await salaryRecord.save();
+  //     console.log(updatedSelery);
+  //     } else {
+  //       salaryRecord = new Salary({
+  //         employee: EmployeId,
+  //         month,
+  //         year,
+  //         totalWorkingDays: 30,
+  //         totalPresentDays,
+  //         totalHalfDays,
+  //         calculatedSalary,
+  //         paymentStatus: paymentStatus || 'Unpaid',
+  //         creditedAmount: creditedAmount || 0,
+  //         remainingAmount: remainingAmount || calculatedSalary,
+  //       });
+  
+  //      const newSelerydata =  await salaryRecord.save();
+  //      console.log(newSelerydata)
+  //     }
+  
+  //     return res.status(201).json({ message: 'Salary details saved successfully.', data: salaryRecord });
+  //   } catch (error) {
+  //     console.error('Error saving salary details:', error);
+  //     return res.status(500).json({ error: 'Failed to save salary details.' });
+  //   }
+  // };
+  exports.saveSalaryDetails = async (req, res) => {
+    try {
+      let { 
+        month, 
+        year, 
+        EmployeId, 
+        paymentStatus, 
+        creditedAmount, 
+        remainingAmount, 
+        totalPresentDays, 
+        totalHalfDays, 
+        calculatedSalary 
+      } = req.body;
+  
+      if (!month || !year || !EmployeId) {
+        return res.status(400).json({ error: 'Missing required fields.' });
+      }
+  
+      const employee = await Employee.findById(EmployeId);
+      if (!employee) {
+        return res.status(404).json({ error: 'Employee not found.' });
+      }
+  
+      let salaryRecord = await Salary.findOne({ employee: EmployeId, month, year });
+  
+      if (salaryRecord) {
+        if (paymentStatus === 'Unpaid') {
+          creditedAmount = 0; // Set creditedAmount to 0 if payment status is "Unpaid"
+        }
+  
+        salaryRecord.paymentStatus = paymentStatus || salaryRecord.paymentStatus;
+        salaryRecord.creditedAmount = creditedAmount || salaryRecord.creditedAmount;
+        salaryRecord.remainingAmount = remainingAmount || salaryRecord.remainingAmount;
+        salaryRecord.totalPresentDays = totalPresentDays || salaryRecord.totalPresentDays;
+        salaryRecord.totalHalfDays = totalHalfDays || salaryRecord.totalHalfDays;
+        salaryRecord.calculatedSalary = calculatedSalary || salaryRecord.calculatedSalary;
+  
+        const updatedSelery = await salaryRecord.save();
+        console.log(updatedSelery);
+      } else {
+        if (paymentStatus === 'Unpaid') {
+          creditedAmount = 0; // Set creditedAmount to 0 if payment status is "Unpaid"
+        }
+  
+        salaryRecord = new Salary({
+          employee: EmployeId,
+          month,
+          year,
+          totalWorkingDays: 30,
+          totalPresentDays,
+          totalHalfDays,
+          calculatedSalary,
+          paymentStatus: paymentStatus || 'Unpaid',
+          creditedAmount: creditedAmount || 0,
+          remainingAmount: remainingAmount || calculatedSalary,
+        });
+  
+        const newSelerydata = await salaryRecord.save();
+        console.log(newSelerydata);
+      }
+  
+      return res.status(201).json({ message: 'Salary details saved successfully.', data: salaryRecord });
+    } catch (error) {
+      console.error('Error saving salary details:', error);
+      return res.status(500).json({ error: 'Failed to save salary details.' });
+    }
+  };
+  

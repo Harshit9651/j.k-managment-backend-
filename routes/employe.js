@@ -8,5 +8,5 @@ router.post("/AddEmployee",upload.none(),EmployeeController.addEmployee);
 router.post("/updateAttendance",EmployeeController.dailyAttendance)
 router.post("/EmployeSeleries",EmployeeController.calculateSalary)
 router.get("/AllEmploye",EmployeeController.AllEmployee)
-router.post("/selery",EmployeeController.selerydata)
+router.post("/selery",EmployeeController.saveSalaryDetails)
 module.exports = router;
