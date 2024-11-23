@@ -245,13 +245,19 @@ const { cloudinary, upload } = require('../middleware/multer');
       const salaryDetails = [];
   
       for (let employee of employees) {
-        const attendance = await Attendance.find({
-          employee: employee._id,
-          date: {
-            $gte: new Date(year, month - 1, 1),
-            $lt: new Date(year, month, 1),
-          },
-        });
+        const startOfMonth = new Date(Date.UTC(year, month - 1, 1));  // UTC start of month
+        const endOfMonth = new Date(Date.UTC(year, month, 0));  // UTC end of month
+        endOfMonth.setUTCHours(23, 59, 59, 999);  // End of day in UTC
+        
+const attendance = await Attendance.find({
+  employee: employee._id,
+  date: {
+    $gte: startOfMonth,
+    $lt: endOfMonth
+  }
+});
+        console.log(new Date(year, month - 1, 1), new Date(year, month, 1));
+
   
         let presentDays = 0;
         let halfDays = 0;
