@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const salarySchema = new Schema(
   {
-    employee: {
+    employee_id: {
       type: Schema.Types.ObjectId,
       ref: "Employee",
       required: true,

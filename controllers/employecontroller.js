@@ -258,6 +258,7 @@ const attendance = await Attendance.find({
     $lt: endOfMonth
   }
 });
+console.log("the employe id is:",employee)
         console.log(new Date(year, month - 1, 1), new Date(year, month, 1));
 
   
@@ -320,7 +321,7 @@ const attendance = await Attendance.find({
         return res.status(404).json({ error: 'Employee not found.' });
       }
   
-      let salaryRecord = await Salary.findOne({ employee: EmployeId, month, year });
+      let salaryRecord = await Salary.findOne({  employee_id: EmployeId, month, year });
   
       if (salaryRecord) {
         if (paymentStatus === 'Unpaid') {
@@ -342,7 +343,7 @@ const attendance = await Attendance.find({
         }
   
         salaryRecord = new Salary({
-          employee: EmployeId,
+          employee_id: EmployeId,
           month,
           year,
           totalWorkingDays: 30,
@@ -399,6 +400,7 @@ const attendance = await Attendance.find({
   exports.EmployeSeleryData = async(req,res)=>{
     console.log("hello");
     const { employeId } = req.query; 
-    const EmployeSeleryData =  await Salary.findById(employeId)
-    console.log(EmployeSeleryData)
+    const EmployeSeleryData =  await Salary.find({  employee_id: employeId})
+    res.send(EmployeSeleryData)
+    console.log( "hy the employe selery data is :",EmployeSeleryData)
   }
