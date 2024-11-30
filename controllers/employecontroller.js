@@ -81,18 +81,13 @@ exports.addEmployee = async (req, res) => {
   }
 };
 
-// exports.AllEmployee = async (req, res) => {
-//   const{name}= req.query;
-//   console.log("the name of department is :",name)
-//   const AllEmployeData = await Employee.find({});
-//   res.send(AllEmployeData);
-// };
+
 exports.AllEmployee = async (req, res) => {
   const { name } = req.query;
   console.log("The name of department is:", name);
 
   try {
-    const query = name ? { department: name } : {}; // Add filter only if `name` exists
+    const query = name ? { department: name } : {}; 
     const employees = await Employee.find(query);
     res.status(200).send(employees);
   } catch (error) {
