@@ -86,6 +86,7 @@ const { cloudinary, upload } = require('../middleware/multer');
   }
   exports.dailyAttendance = async (req, res) => {
     const { id, status, date } = req.body;
+    console.log("employe id is:",id)
     if (!id || !status || !date) {
       return res.status(400).json({ message: "Missing required fields" });
     }
@@ -395,3 +396,9 @@ const attendance = await Attendance.find({
     }
   }
   
+  exports.EmployeSeleryData = async(req,res)=>{
+    console.log("hello");
+    const { employeId } = req.query; 
+    const EmployeSeleryData =  await Salary.findById(employeId)
+    console.log(EmployeSeleryData)
+  }
