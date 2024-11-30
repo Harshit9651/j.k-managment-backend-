@@ -123,39 +123,6 @@ exports.getRawCottonKhata = async (req, res) => {
   }
 };
 
-// exports.FetchCustomer = async(req,res)=>{
-//   const { customerId, productType } = req.params;
-// console.log(customerId,productType)
-
-//   let Model;
-//   switch (productType.toLowerCase()) {
-//     case 'mustardoil':
-//       Model = MustardOilKhata;
-//       break;
-//     case 'cuttoncake':
-//       Model = CuttonCakeKhata;
-//       break;
-//     case 'rowofmustard':
-//       Model = RawMustardKhata;
-//       break;
-//     case 'rowofcotton':
-//       Model = RawCottonKhata;
-//       break;
-//     default:
-//       return res.status(400).json({ message: "Invalid product type" });
-//   }
-
-//   try {
-//     console.log("hello")
-//     const customerOrders = await Model.findOne({ _id: customerId }).lean();
-//     console.log(customerOrders)
-//     res.status(200).json(customerOrders);
-//   } catch (error) {
-//     console.error("Error fetching customer orders:", error);
-//     res.status(500).json({ message: "Error fetching customer orders" });
-//   }
-// }
-
 exports.FetchCustomer = async (req, res) => {
   const { customerId, productType } = req.params;
   console.log(customerId, productType);
@@ -251,6 +218,8 @@ exports.updatePaymentStatus = async (req, res) => {
     res.status(500).json({ message: "Error updating payment status" });
   }
 };
+
+
 
 // delete data from khatas
 exports.deleteCustomer_RowOfMustard = async (req, res) => {

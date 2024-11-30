@@ -156,9 +156,16 @@ exports.getAllDirectPurchases = async (req, res) => {
 exports.getAllMandiPurchases = async (req, res) => {
   try {
     const allMandiPurchases = await MandiPurcahse.find();
+    console.log("the data of mandi purchase is",allMandiPurchases)
     res.status(200).json(allMandiPurchases);
   } catch (error) {
     console.error("Error fetching Mandi purchases:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+exports.Admin_Updated_MandiPurchase_data = async(req,res)=>{
+  console.log("hello")
+  const {editableBill} = req.body
+}

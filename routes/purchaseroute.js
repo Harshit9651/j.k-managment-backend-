@@ -5,6 +5,8 @@ const PurcahseController = require('../controllers/purchasecontroller')
 router.post('/Mandi-purchase',validateMandiPurchase,PurcahseController.MandiPurchase)
 router.post('/Brocker-Purchase',validateBrokerPurchase,PurcahseController.BrokerPurchase)
 router.post('/Direct-Purchase',validateDirectPurchase,PurcahseController.DirectPurchase)
+router.post('/updateMandiPurchasedata',PurcahseController.Admin_Updated_MandiPurchase_data)
 router.get('/AllMandiPurchase',PurcahseController.getAllMandiPurchases);
+
 module.exports = router
 
