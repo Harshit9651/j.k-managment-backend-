@@ -226,6 +226,7 @@ const { cloudinary, upload } = require('../middleware/multer');
   };
   
   const calculateEmployeeSalary = (presentDays, halfDays, totalWorkingDays, salaryPerMonth) => {
+    console.log("total working day is:",totalWorkingDays)
     console.log("employe par month selery is :",salaryPerMonth)
     const fullDaySalary = salaryPerMonth / totalWorkingDays;
     console.log('full day selery is :',fullDaySalary)
