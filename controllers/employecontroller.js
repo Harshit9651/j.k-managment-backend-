@@ -226,9 +226,15 @@ const { cloudinary, upload } = require('../middleware/multer');
   };
   
   const calculateEmployeeSalary = (presentDays, halfDays, totalWorkingDays, salaryPerMonth) => {
+    console.log("employe par month selery is :",salaryPerMonth)
     const fullDaySalary = salaryPerMonth / totalWorkingDays;
+    console.log('full day selery is :',fullDaySalary)
     const halfDaySalary = fullDaySalary / 2;
+    console.log('half day of selery is :',halfDaySalary)
+    const allselryis = fullDaySalary*presentDays +halfDaySalary*halfDaySalary;
+    console.log("my estimate is:",allselryis)
     const totalSalary = (presentDays * fullDaySalary) + (halfDays * halfDaySalary);
+    console.log("total selery is :",totalSalary)
     return totalSalary;
   };
   
@@ -275,7 +281,9 @@ console.log("the employe id is:",employee)
             absentDays++;
           }
         });
-  
+  console.log('parsent days is:',presentDays)
+  console.log('half days is:',halfDays) 
+   console.log('leave days is:',absentDays)
         const salary = calculateEmployeeSalary(presentDays, halfDays, workingDaysInMonth, employee.salary);
   
         salaryDetails.push({
