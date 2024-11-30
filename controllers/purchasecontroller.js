@@ -168,4 +168,5 @@ exports.getAllMandiPurchases = async (req, res) => {
 exports.Admin_Updated_MandiPurchase_data = async(req,res)=>{
   console.log("hello")
   const {editableBill} = req.body
+  console.log(editableBill)
 }
