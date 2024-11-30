@@ -81,10 +81,26 @@ exports.addEmployee = async (req, res) => {
   }
 };
 
+// exports.AllEmployee = async (req, res) => {
+//   const{name}= req.query;
+//   console.log("the name of department is :",name)
+//   const AllEmployeData = await Employee.find({});
+//   res.send(AllEmployeData);
+// };
 exports.AllEmployee = async (req, res) => {
-  const AllEmployeData = await Employee.find({});
-  res.send(AllEmployeData);
+  const { name } = req.query;
+  console.log("The name of department is:", name);
+
+  try {
+    const query = name ? { department: name } : {}; // Add filter only if `name` exists
+    const employees = await Employee.find(query);
+    res.status(200).send(employees);
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
 };
+
 exports.dailyAttendance = async (req, res) => {
   const { id, status, date } = req.body;
   console.log("employe id is:", id);
@@ -140,111 +156,6 @@ exports.dailyAttendance = async (req, res) => {
     res.status(500).json({ message: "Failed to save attendance" });
   }
  };
-// const getWorkingDaysInMonth = (month, year) => {
-//   let workingDays = 0;
-//   const daysInMonth = new Date(year, month, 0).getDate();
-
-//   for (let day = 1; day <= daysInMonth; day++) {
-//     const date = new Date(year, month - 1, day);
-//     const dayOfWeek = date.getDay();
-//     if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-//       workingDays++;
-//     }
-//   }
-//   return workingDays;
-// };
-
-// const calculateEmployeeSalary = (
-//   presentDays,
-//   halfDays,
-//   totalWorkingDays,
-//   salaryPerMonth
-// ) => {
-//   console.log("total working day is:", totalWorkingDays);
-//   console.log("employe par month selery is :", salaryPerMonth);
-//   const fullDaySalary = salaryPerMonth / totalWorkingDays;
-//   console.log("full day selery is :", fullDaySalary);
-//   const halfDaySalary = fullDaySalary / 2;
-//   console.log("half day of selery is :", halfDaySalary);
-//   const allselryis =
-//     fullDaySalary * presentDays + halfDaySalary * halfDaySalary;
-//   console.log("my estimate is:", allselryis);
-//   const totalSalary = presentDays * fullDaySalary + halfDays * halfDaySalary;
-//   console.log("total selery is :", totalSalary);
-//   return totalSalary;
-// };
-
-// exports.calculateSalary = async (req, res) => {
-//   try {
-//     const { month, year } = req.body;
-//     console.log(month, year);
-//     if (!month || !year) {
-//       return res.status(400).json({ message: "Month and Year are required." });
-//     }
-
-//     const workingDaysInMonth = getWorkingDaysInMonth(month, year);
-
-//     const employees = await Employee.find();
-
-//     const salaryDetails = [];
-
-//     for (let employee of employees) {
-//       const startOfMonth = new Date(Date.UTC(year, month - 1, 1)); // UTC start of month
-//       const endOfMonth = new Date(Date.UTC(year, month, 0)); // UTC end of month
-//       endOfMonth.setUTCHours(23, 59, 59, 999); // End of day in UTC
-
-//       const attendance = await Attendance.find({
-//         employee: employee._id,
-//         date: {
-//           $gte: startOfMonth,
-//           $lt: endOfMonth,
-//         },
-//       });
-//       console.log("the employe id is:", employee);
-//       console.log(new Date(year, month - 1, 1), new Date(year, month, 1));
-
-//       let presentDays = 0;
-//       let halfDays = 0;
-//       let absentDays = 0;
-
-//       attendance.forEach((entry) => {
-//         if (entry.status === "Full Day") {
-//           presentDays++;
-//         } else if (entry.status === "Half Leave") {
-//           halfDays++;
-//         } else if (entry.status === "Absent") {
-//           absentDays++;
-//         }
-//       });
-//       console.log("parsent days is:", presentDays);
-//       console.log("half days is:", halfDays);
-//       console.log("leave days is:", absentDays);
-//       const salary = calculateEmployeeSalary(
-//         presentDays,
-//         halfDays,
-//         workingDaysInMonth,
-//         employee.salary
-//       );
-
-//       salaryDetails.push({
-//         employeeId: employee._id,
-//         employeeName: employee.name,
-//         presentDays,
-//         halfDays,
-//         absentDays,
-//         salary,
-//         monthlySalary: employee.salary,
-//         occupation: employee.occupation,
-//       });
-//     }
-//     console.log(salaryDetails);
-//     return res.status(200).json(salaryDetails);
-//   } catch (error) {
-//     console.error("Error calculating salary:", error);
-//     return res.status(500).json({ message: "Error calculating salary" });
-//   }
-// };
-
 
 const getTotalDaysInMonth = (month, year) => {
   return new Date(year, month, 0).getDate();
