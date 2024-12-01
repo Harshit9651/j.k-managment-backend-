@@ -259,42 +259,48 @@ exports.Admin_Updated_BrockerPurchase_data = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 exports.Admin_Updated_directPurchase_data = async (req, res) => {
   try {
       console.log("Request received to update Direct Purchase data");
 
-      const { id, totalPayment, paid, due, paymentStatus } = req.body;
-      console.log("the id is ",id)
-      console.log("the ttlpayment is ",totalPayment)
-      console.log("the paid is ",paid)
-      console.log("the due is ",due)
-      console.log("the paymentstatus is ",totalPayment)
+      const { id, totalPayment, paid, DAmount, paymentStatus } = req.body;
+      console.log("The ID is:", id);
+      console.log("The total payment is:", totalPayment);
+      console.log("The paid amount is:", paid);
+      console.log("The due amount is:", DAmount);
+      console.log("The payment status is:", paymentStatus);
 
       // Validate required fields
-      if (!id || totalPayment === undefined || paid === undefined || due === undefined || !paymentStatus) {
-          return res.status(400).json({ error: "Missing required fields" });
+      if (!id || totalPayment === undefined || paid === undefined || DAmount === undefined || !paymentStatus || paymentStatus.trim() === '') {
+          return res.status(400).json({ error: "Missing or invalid required fields" });
       }
 
-
-      const updatedMandiPurchase = await BrokerPurchase.findByIdAndUpdate(
-          id,
-          {
-            ttlprice:  totalPayment,
-            amountPaid: paid,
-            DAmount: due,
-            paymentStatus:paymentStatus,
-          },
-          { new: true } 
-      );
-
-
-      if (!updatedMandiPurchase) {
+      // Find the record by ID
+      const data = await DirectPurchase.findById(id);
+      if (!data) {
+        console.log("ma ki chut ")
           return res.status(404).json({ error: "Mandi purchase record not found" });
       }
-      console.log("hy the data is updated pleace chekout",updatedMandiPurchase)
+      console.log("Existing record:", data);
 
+      // Update the record
+      const updatedMandiPurchase = await DirectPurchase.findByIdAndUpdate(
+          id,
+          {
+              ttlprice: totalPayment,
+              amountPaid: paid,
+              DAmount: DAmount,
+              paymentStatus: paymentStatus,
+          },
+          { new: true } // Return the updated document
+      );
+
+      if (!updatedMandiPurchase) {
+          console.log("Error occurred while updating");
+          return res.status(404).json({ error: "Mandi purchase record not found" });
+      }
+
+      console.log("Data updated successfully. Updated record:", updatedMandiPurchase);
       res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedMandiPurchase });
   } catch (error) {
       console.error("Error updating Mandi Purchase data:", error);

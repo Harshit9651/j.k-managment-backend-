@@ -7,6 +7,7 @@ router.post('/Brocker-Purchase',validateBrokerPurchase,PurcahseController.Broker
 router.post('/Direct-Purchase',validateDirectPurchase,PurcahseController.DirectPurchase)
 router.post('/updateMandiPurchasedata',PurcahseController.Admin_Updated_MandiPurchase_data)
 router.post('/updateBrockerPurchasedata',PurcahseController.Admin_Updated_BrockerPurchase_data)
+router.post('/updateDirectPurchasedata',PurcahseController.Admin_Updated_directPurchase_data)
 router.get('/AllMandiPurchase',PurcahseController.getAllMandiPurchases);
 router.get('/AllBrockerPurchase',PurcahseController.getAllBrockerPurchases)
 router.get('/AllDirectPurchase',PurcahseController.getAllDirectPurchases)
