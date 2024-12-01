@@ -223,37 +223,37 @@ exports.Admin_Updated_BrockerPurchase_data = async (req, res) => {
   try {
       console.log("Request received to update Brocker Purchase data");
 
-      const { id, totalPayment, paid, due, paymentStatus } = req.body;
+      const { id, totalPayment, paid,  DAmount, paymentStatus } = req.body;
       console.log("the id is ",id)
       console.log("the ttlpayment is ",totalPayment)
       console.log("the paid is ",paid)
-      console.log("the due is ",due)
+      console.log("the due is ", DAmount)
       console.log("the paymentstatus is ",totalPayment)
 
       // Validate required fields
-      if (!id || totalPayment === undefined || paid === undefined || due === undefined || !paymentStatus) {
+      if (!id || totalPayment === undefined || paid === undefined ||  DAmount=== undefined || !paymentStatus) {
           return res.status(400).json({ error: "Missing required fields" });
       }
 
 
-      const updatedMandiPurchase = await BrokerPurchase.findByIdAndUpdate(
+      const updatedBrockerPurchase = await BrokerPurchase.findByIdAndUpdate(
           id,
           {
             ttlprice:  totalPayment,
             amountPaid: paid,
-            DAmount: due,
+            DAmount:  DAmount,
             paymentStatus:paymentStatus,
           },
           { new: true } 
       );
 
 
-      if (!updatedMandiPurchase) {
+      if (!updatedBrockerPurchase ) {
           return res.status(404).json({ error: "Mandi purchase record not found" });
       }
-      console.log("hy the data is updated pleace chekout",updatedMandiPurchase)
+      console.log("hy the data is updated pleace chekout",updatedBrockerPurchase )
 
-      res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedMandiPurchase });
+      res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedBrockerPurchase  });
   } catch (error) {
       console.error("Error updating Mandi Purchase data:", error);
       res.status(500).json({ error: "Internal server error" });
@@ -284,7 +284,7 @@ exports.Admin_Updated_directPurchase_data = async (req, res) => {
       console.log("Existing record:", data);
 
       // Update the record
-      const updatedMandiPurchase = await DirectPurchase.findByIdAndUpdate(
+      const updatedDirectPurchase = await DirectPurchase.findByIdAndUpdate(
           id,
           {
               ttlprice: totalPayment,
@@ -295,13 +295,13 @@ exports.Admin_Updated_directPurchase_data = async (req, res) => {
           { new: true } // Return the updated document
       );
 
-      if (!updatedMandiPurchase) {
+      if (!updatedDirectPurchase) {
           console.log("Error occurred while updating");
           return res.status(404).json({ error: "Mandi purchase record not found" });
       }
 
-      console.log("Data updated successfully. Updated record:", updatedMandiPurchase);
-      res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedMandiPurchase });
+      console.log("Data updated successfully. Updated record:", updatedDirectPurchase);
+      res.status(200).json({ message: "Mandi purchase updated successfully", data:updatedDirectPurchase});
   } catch (error) {
       console.error("Error updating Mandi Purchase data:", error);
       res.status(500).json({ error: "Internal server error" });
