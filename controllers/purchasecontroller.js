@@ -165,8 +165,41 @@ exports.getAllMandiPurchases = async (req, res) => {
 };
 
 
-exports.Admin_Updated_MandiPurchase_data = async(req,res)=>{
-  console.log("hello")
-  const {editableBill} = req.body
-  console.log(editableBill)
-}
+exports.Admin_Updated_MandiPurchase_data = async (req, res) => {
+  try {
+      console.log("Request received to update Mandi Purchase data");
+
+      const { id, totalPayment, paid, due, paymentStatus } = req.body;
+      console.log("the id is ",id)
+      console.log("the ttlpayment is ",totalPayment)
+      console.log("the paid is ",paid)
+      console.log("the due is ",due)
+      console.log("the paymentstatus is ",totalPayment)
+
+      // Validate required fields
+      if (!id || totalPayment === undefined || paid === undefined || due === undefined || !paymentStatus) {
+          return res.status(400).json({ error: "Missing required fields" });
+      }
+
+      // Find and update the entry in the database
+      const updatedMandiPurchase = await MandiPurchase.findByIdAndUpdate(
+          id,
+          {
+              totalPayment,
+              paid,
+              due,
+              paymentStatus,
+          },
+          { new: true } // Returns the updated document
+      );
+
+      if (!updatedMandiPurchase) {
+          return res.status(404).json({ error: "Mandi purchase record not found" });
+      }
+
+      res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedMandiPurchase });
+  } catch (error) {
+      console.error("Error updating Mandi Purchase data:", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+};
