@@ -181,7 +181,7 @@ exports.Admin_Updated_MandiPurchase_data = async (req, res) => {
           return res.status(400).json({ error: "Missing required fields" });
       }
 
-      // Find and update the entry in the database
+
       const updatedMandiPurchase = await MandiPurcahse.findByIdAndUpdate(
           id,
           {
