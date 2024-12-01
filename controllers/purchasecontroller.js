@@ -182,20 +182,22 @@ exports.Admin_Updated_MandiPurchase_data = async (req, res) => {
       }
 
       // Find and update the entry in the database
-      const updatedMandiPurchase = await MandiPurchase.findByIdAndUpdate(
+      const updatedMandiPurchase = await MandiPurcahse.findByIdAndUpdate(
           id,
           {
-              totalPayment,
-              paid,
-              due,
-              paymentStatus,
+            ttlprice:  totalPayment,
+            amountPaid: paid,
+            dueamount: due,
+            paymentStatus:paymentStatus,
           },
-          { new: true } // Returns the updated document
+          { new: true } 
       );
+
 
       if (!updatedMandiPurchase) {
           return res.status(404).json({ error: "Mandi purchase record not found" });
       }
+      console.log("hy the data is updated pleace chekout",updatedMandiPurchase)
 
       res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedMandiPurchase });
   } catch (error) {
