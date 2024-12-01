@@ -146,6 +146,7 @@ console.log(dueAmount)
 exports.getAllDirectPurchases = async (req, res) => {
   try {
     const allDirectPurchases = await DirectPurchase.find();
+    console.log(allDirectPurchases)
     res.status(200).json(allDirectPurchases);
   } catch (error) {
     console.error("Error fetching direct purchases:", error);
@@ -160,6 +161,17 @@ exports.getAllMandiPurchases = async (req, res) => {
     res.status(200).json(allMandiPurchases);
   } catch (error) {
     console.error("Error fetching Mandi purchases:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.getAllBrockerPurchases = async (req, res) => {
+  try {
+    const allBrokcerPurchases = await BrokerPurchase.find();
+    console.log("all brocker purchase data:",allBrokcerPurchases)
+    res.status(200).json( allBrokcerPurchases);
+  } catch (error) {
+    console.error("Error fetching direct purchases:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -188,6 +200,90 @@ exports.Admin_Updated_MandiPurchase_data = async (req, res) => {
             ttlprice:  totalPayment,
             amountPaid: paid,
             dueamount: due,
+            paymentStatus:paymentStatus,
+          },
+          { new: true } 
+      );
+
+
+      if (!updatedMandiPurchase) {
+          return res.status(404).json({ error: "Mandi purchase record not found" });
+      }
+      console.log("hy the data is updated pleace chekout",updatedMandiPurchase)
+
+      res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedMandiPurchase });
+  } catch (error) {
+      console.error("Error updating Mandi Purchase data:", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+exports.Admin_Updated_BrockerPurchase_data = async (req, res) => {
+  try {
+      console.log("Request received to update Brocker Purchase data");
+
+      const { id, totalPayment, paid, due, paymentStatus } = req.body;
+      console.log("the id is ",id)
+      console.log("the ttlpayment is ",totalPayment)
+      console.log("the paid is ",paid)
+      console.log("the due is ",due)
+      console.log("the paymentstatus is ",totalPayment)
+
+      // Validate required fields
+      if (!id || totalPayment === undefined || paid === undefined || due === undefined || !paymentStatus) {
+          return res.status(400).json({ error: "Missing required fields" });
+      }
+
+
+      const updatedMandiPurchase = await BrokerPurchase.findByIdAndUpdate(
+          id,
+          {
+            ttlprice:  totalPayment,
+            amountPaid: paid,
+            DAmount: due,
+            paymentStatus:paymentStatus,
+          },
+          { new: true } 
+      );
+
+
+      if (!updatedMandiPurchase) {
+          return res.status(404).json({ error: "Mandi purchase record not found" });
+      }
+      console.log("hy the data is updated pleace chekout",updatedMandiPurchase)
+
+      res.status(200).json({ message: "Mandi purchase updated successfully", data: updatedMandiPurchase });
+  } catch (error) {
+      console.error("Error updating Mandi Purchase data:", error);
+      res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+exports.Admin_Updated_directPurchase_data = async (req, res) => {
+  try {
+      console.log("Request received to update Direct Purchase data");
+
+      const { id, totalPayment, paid, due, paymentStatus } = req.body;
+      console.log("the id is ",id)
+      console.log("the ttlpayment is ",totalPayment)
+      console.log("the paid is ",paid)
+      console.log("the due is ",due)
+      console.log("the paymentstatus is ",totalPayment)
+
+      // Validate required fields
+      if (!id || totalPayment === undefined || paid === undefined || due === undefined || !paymentStatus) {
+          return res.status(400).json({ error: "Missing required fields" });
+      }
+
+
+      const updatedMandiPurchase = await BrokerPurchase.findByIdAndUpdate(
+          id,
+          {
+            ttlprice:  totalPayment,
+            amountPaid: paid,
+            DAmount: due,
             paymentStatus:paymentStatus,
           },
           { new: true } 
