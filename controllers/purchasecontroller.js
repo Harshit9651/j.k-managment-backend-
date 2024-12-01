@@ -1,6 +1,7 @@
 const MandiPurcahse = require("../models/mandipurchaseModel");
 const BrokerPurchase = require("../models/brokerpurchaseModel");
-const DirectPurchase = require("../models/directpurchaseModel")
+const DirectPurchase = require("../models/directpurchaseModel");
+const SuspanceModel = require("../models/suspanceModel")
 const mongoose = require("mongoose");
 exports.MandiPurchase = async (req, res) => {
   try {
@@ -307,3 +308,32 @@ exports.Admin_Updated_directPurchase_data = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
   }
 };
+exports.SuspanceData = async (req, res) => {
+  const { itemType, suspenseDate, amount, description } = req.body;
+  if (!itemType || !suspenseDate || !amount || !description) {
+    return res.status(400).json({ message: 'All fields are required.' });
+  }
+
+  try {
+    const newSuspance = new SuspanceModel({
+      expenseType:itemType,
+      expenseDate:suspenseDate,
+      amount:amount,
+      description:description,
+    });
+   const suspance_data= await newSuspance.save();
+   console.log("here is suspance data",suspance_data)
+    res.status(201).json({ message: 'Suspense data saved successfully!', data: newSuspance });
+  } catch (error) {
+    console.error('Error saving suspense data:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
+
+
+exports.All_Suspance_data = async(req,res)=>{
+  console.log("hello")
+  const all_suspance_data = await SuspanceModel.find({});
+  console.log(all_suspance_data);
+  res.send(all_suspance_data)
+}

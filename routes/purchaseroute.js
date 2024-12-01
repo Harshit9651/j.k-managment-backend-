@@ -8,9 +8,11 @@ router.post('/Direct-Purchase',validateDirectPurchase,PurcahseController.DirectP
 router.post('/updateMandiPurchasedata',PurcahseController.Admin_Updated_MandiPurchase_data)
 router.post('/updateBrockerPurchasedata',PurcahseController.Admin_Updated_BrockerPurchase_data)
 router.post('/updateDirectPurchasedata',PurcahseController.Admin_Updated_directPurchase_data)
+router.post('/SuspanceData',PurcahseController.SuspanceData)
 router.get('/AllMandiPurchase',PurcahseController.getAllMandiPurchases);
 router.get('/AllBrockerPurchase',PurcahseController.getAllBrockerPurchases)
 router.get('/AllDirectPurchase',PurcahseController.getAllDirectPurchases)
+router.get('/AllSuspanceData',PurcahseController.All_Suspance_data );
 
 module.exports = router
 

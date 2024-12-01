@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const machineExpenseSchema = new mongoose.Schema({
-    adminId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        ref: 'User',
-    },
+    // adminId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true,
+    //     ref: 'User',
+    // },
     expenseType: {
         type: String,
         required: true,
