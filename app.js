@@ -32,6 +32,7 @@ const bodyparser = require('body-parser');
 const EmployeRoute = require('./routes/employe')
 const PurchaseRoute = require('./routes/purchaseroute')
 const  SellRoute = require('./routes/sellroute')
+const AuthRoute = require('./routes/authroute')
 
 
 
@@ -47,24 +48,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/purchase',PurchaseRoute)
 app.use('/Sell',SellRoute)
 app.use('/Employe',EmployeRoute)
+app.use('/Auth',AuthRoute)
 
 app.get('/',(req,res)=>{
     res.send('api work correctly')
 })
-const mustardOildkhatabook = require('./models/cuttonCakeKhataModel');
 
-app.get('/all', async (req, res) => {
-  try {
-    const uniqueCustomers = await mustardOildkhatabook.find({})
-   
-    res.send(uniqueCustomers);
-  } catch (error) {
-    console.error('Error fetching unique customers:', error);
-    res.status(500).send('Error fetching customers');
-  }
-});
-const employe = require('./models/employeeModel');
-app.get('/alldata',async(req,res)=>{
-  const data = await employe.find({});
-  res.send(data)
-})
+

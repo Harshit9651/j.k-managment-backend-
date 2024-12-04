@@ -2,9 +2,10 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
-const login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log("the email is:",email,"and the password is:",password)
 
     if (!email || !password) {
       return res.status(400).json({ message: "Email and Password are required." });
@@ -13,6 +14,8 @@ const login = async (req, res) => {
     
     const storedEmailHash = process.env.EMAIL_HASH;
     const storedPasswordHash = process.env.PASSWORD_HASH;
+    console.log(storedEmailHash,storedPasswordHash)
+
 
   
     const isEmailValid = await bcrypt.compare(email, storedEmailHash);
@@ -32,4 +35,3 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { login };
