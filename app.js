@@ -33,7 +33,7 @@ const EmployeRoute = require('./routes/employe')
 const PurchaseRoute = require('./routes/purchaseroute')
 const  SellRoute = require('./routes/sellroute')
 const AuthRoute = require('./routes/authroute')
-
+const AdminRoute = require('./routes/adminroute')
 
 
 
@@ -49,7 +49,7 @@ app.use('/purchase',PurchaseRoute)
 app.use('/Sell',SellRoute)
 app.use('/Employe',EmployeRoute)
 app.use('/Auth',AuthRoute)
-
+app.use('/Admin',AdminRoute)
 app.get('/',(req,res)=>{
     res.send('api work correctly')
 })
