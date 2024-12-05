@@ -10,8 +10,9 @@ const SuspenseData = require("../models/suspanceModel");
 
 
 exports.fetchdata = async (req, res) => {
+    console.log('teri bhn da fudaa maru')
     const { category, startDate, endDate } = req.body;
-  
+  console.log(category, startDate, endDate)
     if (!category || !startDate || !endDate) {
       return res.status(400).json({
         success: false,
@@ -25,9 +26,12 @@ exports.fetchdata = async (req, res) => {
       // Use switch to handle different categories
       switch (category) {
         case "mandiPurchase":
+            console.log('hello')
           data = await MandiPurchase.find({
+
             createdAt: { $gte: new Date(startDate), $lte: new Date(endDate) },
           });
+          console.log(data)
           break;
   
         case "brokerPurchase":
