@@ -15,5 +15,6 @@ router.get('/AllBrockerPurchase',PurcahseController.getAllBrockerPurchases)
 router.get('/AllDirectPurchase',PurcahseController.getAllDirectPurchases)
 router.get('/AllSuspanceData', authenticateToken, PurcahseController.All_Suspance_data );
 
+
 module.exports = router
 
