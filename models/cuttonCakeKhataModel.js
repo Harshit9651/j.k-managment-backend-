@@ -24,7 +24,7 @@ const CuttonCakekhataSchema = new mongoose.Schema(
         },
         creditPaid: { type: Number, default: 0 }, 
         remainingAmount: { type: Number, default: 0 },
-         timestamps: true 
+        orderDate: { type: Date, default: Date.now, required: true },
       },
     ],
   },
