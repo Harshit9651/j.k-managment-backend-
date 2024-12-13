@@ -20,7 +20,11 @@ const RawCottonKhataSchema = new mongoose.Schema(
           type: String,
           enum: ["Paid", "Unpaid", "Partially Paid"],
           required: true,
+          default: "Paid",
         },
+        creditPaid: { type: Number, default: 0 }, 
+        remainingAmount: { type: Number, default: 0 },
+        timestamps: true 
       },
     ],
   },

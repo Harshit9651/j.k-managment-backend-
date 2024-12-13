@@ -4,9 +4,169 @@ const CuttonCakeKhata = require("../models/cuttonCakeKhataModel");
 const RawMustardKhata = require("../models/rowMustardKhataModel");
 const RawCottonKhata = require("../models/rowCuttonKhataModel");
 
+// exports.createOrder = async (req, res) => {
+//   try {
+//     const { customerName, orderDate, products, totalPayment } = req.body;
+//     console.log("request body is :", req.body)
+
+//     const newOrder = new Selldata({
+//       customerName,
+//       orderDate,
+//       products,
+//       totalPayment,
+//     });
+//     const savedOrder = await newOrder.save();
+//     console.log("Order saved in Selldata:", savedOrder);
+
+//     for (let product of products) {
+//       const receiptNumber = `BILL-${Date.now()}-${Math.floor(
+//         Math.random() * 1000
+//       )}`;
+//       const productType = product.name.toLowerCase();
+//       let KhataModel;
+
+//       if (productType === "mustard oil") {
+//         KhataModel = MustardOilKhata;
+//       } else if (productType === "cutton cake") {
+//         KhataModel = CuttonCakeKhata;
+//       } else if (productType === "row of mustard") {
+//         KhataModel = RawMustardKhata;
+//       } else if (productType === "row of cotton") {
+//         KhataModel = RawCottonKhata;
+//       } else {
+//         console.warn(`Invalid product type: ${productType}`);
+//         continue;
+//       }
+
+//       let existingKhata = await KhataModel.findOne({ customerName });
+// console.log("payments ststus is",product.paymentStatus)
+//       const productEntry = {
+//         name: product.name,
+//         weight: product.weight,
+//         quantity: product.quantity,
+//         pricePerUnit: product.pricePerUnit,
+//         ttlprice: product.pricePerUnit * product.quantity,
+//         billNumber: receiptNumber,
+//         creditPaid: product.paidAmount,
+//         remainingAmount:product.remainingAmount,
+//       };
+
+//       if (!existingKhata) {
+//         existingKhata = new KhataModel({
+//           customerName,
+//           orderDate,
+//           products: [productEntry],
+//           paymentStatus: paymentStatus || "Unpaid", 
+          
+//         });
+//       } else {
+//         existingKhata.products.push(productEntry);
+//       }
+
+//       const savedKhata = await existingKhata.save();
+//       console.log(`Khata entry saved for ${product.name}:`, savedKhata);
+//     }
+
+//     return res.status(200).json({
+//       message:
+//         "Order submitted successfully, and khata entries created/updated for each product.",
+//       order: savedOrder,
+//     });
+//   } catch (error) {
+//     console.error("Error submitting order:", error);
+//     res
+//       .status(500)
+//       .json({ message: "Error occurred while submitting the order." });
+//   }
+// };
+
+
+
+
+
+// exports.createOrder = async (req, res) => {
+//   try {
+//     const { customerName, orderDate, products, totalPayment,paymentStatus ,paidAmount,remainingAmount} = req.body;
+//     console.log("the paymets ststus is :", paymentStatus)
+//     console.log("request body is:", req.body);
+
+//     const newOrder = new Selldata({
+//       customerName,
+//       orderDate,
+//       products,
+//       totalPayment,
+//     });
+//     const savedOrder = await newOrder.save();
+//     console.log("Order saved in Selldata:", savedOrder);
+
+//     for (let product of products) {
+//       const receiptNumber = `BILL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+//       const productType = product.name.toLowerCase();
+//       let KhataModel;
+
+//       if (productType === "mustard oil") {
+//         KhataModel = MustardOilKhata;
+//       } else if (productType === "cutton cake") {
+//         KhataModel = CuttonCakeKhata;
+//       } else if (productType === "row of mustard") {
+//         KhataModel = RawMustardKhata;
+//       } else if (productType === "row of cotton") {
+//         KhataModel = RawCottonKhata;
+//       } else {
+//         console.warn(`Invalid product type: ${productType}`);
+//         continue;
+//       }
+
+//       let existingKhata = await KhataModel.findOne({ customerName });
+//       console.log("Payment status is:", paymentStatus);
+
+//       const productEntry = {
+//         name: product.name,
+//         weight: product.weight,
+//         quantity: product.quantity,
+//         pricePerUnit: product.pricePerUnit,
+//         ttlprice: product.pricePerUnit * product.quantity,
+//         billNumber: receiptNumber,
+//         creditPaid:paidAmount, 
+//         remainingAmount:remainingAmount,
+//         paymentStatus:paymentStatus
+//       };
+
+//       if (!existingKhata) {
+//         existingKhata = new KhataModel({
+//           customerName,
+//           orderDate,
+//           products: [productEntry],
+//           paymentStatus: paymentStatus || "Unpaid",
+//         });
+//       } else {
+//         existingKhata.products.push(productEntry);
+//       }
+
+//       const savedKhata = await existingKhata.save();
+//       console.log(`Khata entry saved for ${product.name}:`, savedKhata);
+//     }
+
+//     return res.status(200).json({
+//       message:
+//         "Order submitted successfully, and khata entries created/updated for each product.",
+//       order: savedOrder,
+//     });
+//   } catch (error) {
+//     console.error("Error submitting order:", error);
+//     res
+//       .status(500)
+//       .json({ message: "Error occurred while submitting the order." });
+//   }
+// };
+
+
+
 exports.createOrder = async (req, res) => {
   try {
-    const { customerName, orderDate, products, totalPayment } = req.body;
+    const { customerName, orderDate, products, totalPayment, paymentStatus, paidAmount, remainingAmount } = req.body;
+    console.log("The payment status is:", paymentStatus);
+    console.log("Request body is:", req.body);
 
     const newOrder = new Selldata({
       customerName,
@@ -18,9 +178,7 @@ exports.createOrder = async (req, res) => {
     console.log("Order saved in Selldata:", savedOrder);
 
     for (let product of products) {
-      const receiptNumber = `BILL-${Date.now()}-${Math.floor(
-        Math.random() * 1000
-      )}`;
+      const receiptNumber = `BILL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       const productType = product.name.toLowerCase();
       let KhataModel;
 
@@ -38,15 +196,32 @@ exports.createOrder = async (req, res) => {
       }
 
       let existingKhata = await KhataModel.findOne({ customerName });
+      console.log("Payment status is:", paymentStatus);
+
+      const ttlprice = product.pricePerUnit * product.quantity;
+      let productPaymentStatus =paymentStatus || "Unpaid";
+      let productPaidAmount =  paidAmount || 0;
+      let productRemainingAmount = ttlprice - productPaidAmount;
+
+      // Adjust values based on payment status
+      if (productPaymentStatus === "Unpaid") {
+        productPaidAmount = 0;
+        productRemainingAmount = ttlprice;
+      } else if (productPaymentStatus === "Paid") {
+        productPaidAmount = ttlprice;
+        productRemainingAmount = 0;
+      }
 
       const productEntry = {
         name: product.name,
         weight: product.weight,
         quantity: product.quantity,
         pricePerUnit: product.pricePerUnit,
-        ttlprice: product.pricePerUnit * product.quantity,
-        paymentStatus: "Unpaid",
+        ttlprice,
         billNumber: receiptNumber,
+        creditPaid: productPaidAmount,
+        remainingAmount: productRemainingAmount,
+        paymentStatus: productPaymentStatus,
       };
 
       if (!existingKhata) {
@@ -54,6 +229,7 @@ exports.createOrder = async (req, res) => {
           customerName,
           orderDate,
           products: [productEntry],
+          paymentStatus: productPaymentStatus,
         });
       } else {
         existingKhata.products.push(productEntry);
@@ -75,6 +251,7 @@ exports.createOrder = async (req, res) => {
       .json({ message: "Error occurred while submitting the order." });
   }
 };
+
 
 exports.getMustardOilKhata = async (req, res) => {
   try {
@@ -213,6 +390,65 @@ exports.updatePaymentStatus = async (req, res) => {
     res
       .status(200)
       .json({ message: "Payment status updated successfully", updatedRecord });
+  } catch (error) {
+    console.error("Error updating payment status:", error);
+    res.status(500).json({ message: "Error updating payment status" });
+  }
+};
+
+exports.updateSellData = async (req, res) => {
+  const { productname, id, paymentStatus, creditedPayment, remainingAmount } = req.body;
+
+  console.log(`Product Name: ${productname}`);
+  console.log(`ID: ${id}`);
+  console.log(`Payment Status: ${paymentStatus}`);
+  console.log(`Credited Payment: ${creditedPayment}`);
+  console.log(`Remaining Amount: ${remainingAmount}`);
+
+  // Normalize the productname to lowercase for comparison
+  const normalizedProductName = productname.toLowerCase();
+  console.log("Normalized Product Name:", normalizedProductName);
+  let Model;
+
+  // Determine the appropriate model based on product name
+  switch (normalizedProductName) {
+    case "mustard oil":
+      Model = MustardOilKhata;
+      break;
+    case "cotton cake":  // Fixed typo
+      Model = CuttonCakeKhata;
+      break;
+    case "rawmustard":
+      Model = RawMustardKhata;
+      break;
+    case "row of cotton":
+      Model = RawCottonKhata;
+      break;
+    default:
+      return res.status(400).json({ message: "Invalid product type" });
+  }
+
+  try {
+    console.log("Attempting to update the record...");
+
+    // Use `findOneAndUpdate` with array filters to update a specific product within the array
+    const updatedRecord = await Model.findOneAndUpdate(
+      { "products._id": id },  // Find the document with the product ID
+      {
+        $set: {
+          "products.$.paymentStatus": paymentStatus,
+          "products.$.creditedPayment": creditedPayment,  // Make sure this matches the field in your schema
+          "products.$.remainingAmount": remainingAmount,
+        },
+      },
+      { new: true }  // Return the updated document
+    );
+
+    if (!updatedRecord) {
+      return res.status(404).json({ message: "Record not found" });
+    }
+
+    res.status(200).json({ message: "Payment status updated successfully", updatedRecord });
   } catch (error) {
     console.error("Error updating payment status:", error);
     res.status(500).json({ message: "Error updating payment status" });

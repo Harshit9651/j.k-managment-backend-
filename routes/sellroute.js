@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const SellController = require("../controllers/sellController");
 router.post("/SellData", SellController.createOrder);
+router.post('/UpdateOrderData',SellController.updateSellData)
 
 router.get("/mustardOilKhata", SellController.getMustardOilKhata);
 router.get("/cottonCakeKhata", SellController.getCottonCakeKhata);
