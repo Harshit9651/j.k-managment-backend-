@@ -7,7 +7,76 @@ const CottonCake = require("../models/cuttonCakeKhataModel");
 const RowCottonCake = require("../models/rowCuttonKhataModel");
 const SuspenseData = require("../models/suspanceModel");
 
+exports.ResetFactoryData = async (req, res) => {
+  try {
+   
 
+    const models = [
+      MandiPurchase,
+      BrokerPurchase,
+      DirectPurchase,
+      MustardOilKhata,
+      RowMustardOilKhata,
+      CottonCake,
+      RowCottonCake,
+      SuspenseData
+    ];
+
+ 
+    const resetPromises = models.map((model) => model.deleteMany({}));
+
+  
+    await Promise.all(resetPromises);
+
+ 
+    res.status(200).json({ message: "Factory data has been reset successfully." });
+  } catch (error) {
+   
+    console.error("Error resetting factory data:", error);
+    res.status(500).json({ error: "An error occurred while resetting factory data." });
+  }
+};
+
+
+
+exports.ResetPurchaseData = async (req, res) => {
+  try {
+    await Promise.all([
+      MandiPurchase.deleteMany({}),
+      BrokerPurchase.deleteMany({}),
+      DirectPurchase.deleteMany({})
+    ]);
+    res.status(200).json({ message: "Purchase data has been reset successfully." });
+  } catch (error) {
+    console.error("Error resetting purchase data:", error);
+    res.status(500).json({ error: "An error occurred while resetting purchase data." });
+  }
+};
+
+exports.ResetKhataData = async (req, res) => {
+  try {
+    await Promise.all([
+      MustardOilKhata.deleteMany({}),
+      RowMustardOilKhata.deleteMany({}),
+      CottonCake.deleteMany({}),
+      RowCottonCake.deleteMany({})
+    ]);
+    res.status(200).json({ message: "Khata data has been reset successfully." });
+  } catch (error) {
+    console.error("Error resetting khata data:", error);
+    res.status(500).json({ error: "An error occurred while resetting khata data." });
+  }
+};
+
+exports.ResetSuspenseData = async (req, res) => {
+  try {
+    await SuspenseData.deleteMany({});
+    res.status(200).json({ message: "Suspense data has been reset successfully." });
+  } catch (error) {
+    console.error("Error resetting suspense data:", error);
+    res.status(500).json({ error: "An error occurred while resetting suspense data." });
+  }
+};
 
 exports.fetchdata = async (req, res) => {
     console.log('teri bhn da fudaa maru')
