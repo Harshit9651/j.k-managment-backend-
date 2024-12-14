@@ -13,7 +13,7 @@ router.post('/SuspanceData',PurcahseController.SuspanceData)
 router.get('/AllMandiPurchase',PurcahseController.getAllMandiPurchases);
 router.get('/AllBrockerPurchase',PurcahseController.getAllBrockerPurchases)
 router.get('/AllDirectPurchase',PurcahseController.getAllDirectPurchases)
-router.get('/AllSuspanceData', authenticateToken, PurcahseController.All_Suspance_data );
+router.get('/AllSuspanceData', PurcahseController.All_Suspance_data );
 
 
 module.exports = router
