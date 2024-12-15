@@ -47,15 +47,17 @@ exports.login = async (req, res) => {
     console.log("the email is:",email)
     console.log('the password is :',password)
     // Get stored email and password directly from environment variables
-    const storedEmail = process.env.EMAIL;
-    const storedPassword = process.env.PASSWORD;
+    const storedEmail = process.env.email;
+    const storedPassword = process.env.password;
     console.log(storedEmail, storedPassword);
 
     // Compare email and password directly (no hashing)
     if (email !== storedEmail || password !== storedPassword) {
+      console.log('not correct the email and password ')
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
+  
     // Generate JWT token if login is successful
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
