@@ -8,24 +8,24 @@ app.use(cors({
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   allowedHeaders: ['Content-Type', 'Authorization'],  
 }));
-require('./connection/connections')
-// const connectDB = require('./connection/connections')
+// require('./connection/connections')
+const connectDB = require('./connection/connections')
 require('dotenv').config()
-// connectDB()
-//   .then(() => {
-//     console.log('Database connected successfully');
-//     app.listen(3000, () => {
-//       console.log(`Server is running on port ${process.env.PORT}`);
-//     });
-//   })
-//   .catch((error) => {
-//     console.error('Database connection failed:', error);
-//   });
+connectDB()
+  .then(() => {
+    console.log('Database connected successfully');
+    app.listen(3000, () => {
+      console.log(`Server is running on port ${process.env.PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Database connection failed:', error);
+  });
 
 
-app.listen(3000, () => {
-        console.log(`Server is running on port ${process.env.PORT}`);
-      });
+// app.listen(3000, () => {
+//         console.log(`Server is running on port ${process.env.PORT}`);
+//       });
 
 
 const bodyparser = require('body-parser');
