@@ -415,10 +415,10 @@ exports.updateSellData = async (req, res) => {
     case "mustard oil":
       Model = MustardOilKhata;
       break;
-    case "cotton cake":  // Fixed typo
+    case " cutton cake":  // Fixed typo
       Model = CuttonCakeKhata;
       break;
-    case "rawmustard":
+    case "row of mustard":
       Model = RawMustardKhata;
       break;
     case "row of cotton":
