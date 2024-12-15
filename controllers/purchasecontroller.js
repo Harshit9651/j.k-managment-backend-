@@ -14,6 +14,10 @@ exports.MandiPurchase = async (req, res) => {
     console.log(dueAmountp);
     console.log(purchaseData.paidAmount);
     console.log(purchaseData.totalPayment);
+    if (paymentStatus == 'Pending') {
+      paymentStatus = "Partially Paid";
+    }
+    
     const newPurchase = new MandiPurcahse({
       DelarName: purchaseData.DelarName,
       itemType: purchaseData.itemType,
@@ -60,7 +64,10 @@ exports.BrokerPurchase = async (req, res) => {
     const dueAmount = purchaseData.totalPayment - purchaseData.paidAmount;
 console.log(purchaseData.dueAmount ,"due amount")
 console.log(purchaseData.totalPrice)
- 
+if (paymentStatus == 'Pending') {
+  paymentStatus = "Partially Paid";
+}
+
 
     const newBrokerPurchase = new BrokerPurchase({
       itemType: purchaseData.itemType,
@@ -109,6 +116,10 @@ exports.DirectPurchase = async (req, res) => {
     console.log(`total amount is ${purchaseData. totalPayment}`)
     console.log(`paid amount is ${purchaseData.paidAmount}`)
 console.log(dueAmount)
+if (paymentStatus == 'Pending') {
+  paymentStatus = "Partially Paid";
+}
+
 
     const newDirectPurchase = new DirectPurchase({
       dealerName: purchaseData.dealerName,
