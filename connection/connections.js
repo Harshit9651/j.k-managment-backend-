@@ -11,7 +11,7 @@ const mongoose = require('mongoose');
 require('dotenv').config
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODBATLS, {
+    await mongoose.connect('mongodb+srv://vipulswamijk:vipul123456789@jkmanagement.vodtr.mongodb.net/?retryWrites=true&w=majority&appName=jkmanagement', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       serverSelectionTimeoutMS: 30000  });
