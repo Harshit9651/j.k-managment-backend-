@@ -54,7 +54,7 @@ const trimmedPassword = password.trim();
     console.log(storedEmail, storedPassword);
 
     // Compare email and password directly (no hashing)
-    if (trimmedEmail !== storedEmail || trimmedPassword !== storedPassword) {
+    if (email.trim().toLowerCase() !== storedEmail.trim().toLowerCase() ||password.trim().toLowerCase() !== storedPassword.trim().toLowerCase() ) {
       console.log('not correct the email and password ')
       return res.status(401).json({ message: "Invalid email or password." });
     }
@@ -70,3 +70,7 @@ const trimmedPassword = password.trim();
     return res.status(500).json({ message: "Server error. Please try again later." });
   }
 }
+
+
+
+
