@@ -35,7 +35,7 @@ require("dotenv").config();
 //   }
 // };
 
-xports.login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
     console.log("the email is:", email, "and the password is:", password);
