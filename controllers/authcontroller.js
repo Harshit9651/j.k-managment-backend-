@@ -44,6 +44,8 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Email and Password are required." });
     }
 
+    console.log("the email is:",email)
+    console.log('the password is :',password)
     // Get stored email and password directly from environment variables
     const storedEmail = process.env.EMAIL;
     const storedPassword = process.env.PASSWORD;
