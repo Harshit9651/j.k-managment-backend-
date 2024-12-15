@@ -44,6 +44,8 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Email and Password are required." });
     }
 
+    const trimmedEmail = email.trim();
+const trimmedPassword = password.trim();
     console.log("the email is:",email)
     console.log('the password is :',password)
     // Get stored email and password directly from environment variables
@@ -52,7 +54,7 @@ exports.login = async (req, res) => {
     console.log(storedEmail, storedPassword);
 
     // Compare email and password directly (no hashing)
-    if (email !== storedEmail || password !== storedPassword) {
+    if (trimmedEmail !== storedEmail || trimmedPassword !== storedPassword) {
       console.log('not correct the email and password ')
       return res.status(401).json({ message: "Invalid email or password." });
     }
