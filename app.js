@@ -4,7 +4,7 @@ const axios = require('axios')
 const path = require('path')
 const cors = require('cors');
 app.use(cors({
-  origin: 'http://localhost:8080', 
+  origin: ['http://localhost:8080', 'https://shrivinayk.in'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'], 
   allowedHeaders: ['Content-Type', 'Authorization'],  
 }));
