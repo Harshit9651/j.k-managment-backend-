@@ -34,30 +34,30 @@ require("dotenv").config();
 //     return res.status(500).json({ message: "Server error. Please try again later." });
 //   }
 // };
+
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("Received email:", email, "and password:", password);
+    console.log("the email is:", email, "and the password is:", password);
 
-    // Validate input
     if (!email || !password) {
       return res.status(400).json({ message: "Email and Password are required." });
     }
 
-    // Retrieve hashed email and password from environment variables
-    const storedEmailHash = process.env.EMAIL_HASH;
-    const storedPasswordHash = process.env.PASSWORD_HASH;
-    console.log("Stored Email Hash:", storedEmailHash, "Stored Password Hash:", storedPasswordHash);
+    console.log("the email is:",email)
+    console.log('the password is :',password)
+    // Get stored email and password directly from environment variables
+    const storedEmail = process.env.email;
+    const storedPassword = process.env.password;
+    console.log(storedEmail, storedPassword);
 
-    // Compare the provided email and password with stored hashes
-    const isEmailValid = await bcrypt.compare(email, storedEmailHash);
-    const isPasswordValid = await bcrypt.compare(password, storedPasswordHash);
-
-    if (!isEmailValid || !isPasswordValid) {
-      console.log("Invalid email or password");
+    // Compare email and password directly (no hashing)
+    if (email !== storedEmail || password !== storedPassword) {
+      console.log('not correct the email and password ')
       return res.status(401).json({ message: "Invalid email or password." });
     }
 
+  
     // Generate JWT token if login is successful
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
@@ -67,4 +67,4 @@ exports.login = async (req, res) => {
     console.error("Error during login:", error);
     return res.status(500).json({ message: "Server error. Please try again later." });
   }
-};
+}
