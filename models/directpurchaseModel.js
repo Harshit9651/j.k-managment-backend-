@@ -55,7 +55,7 @@ const directPurchaseSchema = new mongoose.Schema({
     required: true,
     unique: true,
   },
-  pststus:{
+  paymentStatus: {
     type: String,
     enum: ["Paid", "Unpaid", "Partially Paid"],
     default: "Unpaid",

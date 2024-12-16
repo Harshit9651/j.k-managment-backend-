@@ -95,7 +95,7 @@ exports.MandiPurchase = async (req, res) => {
       amountPaid: paidAmount,
       ttlprice: totalPayment,
       dueamount: dueAmount,
-      pststus: paymentStatus,
+      paymentStatus:paymentStatus,
       Dhami: purchaseData.Dhami || 2.5,
       pal: purchaseData.pal || 4,
     });
@@ -263,7 +263,7 @@ exports.BrokerPurchase = async (req, res) => {
       brokerName: purchaseData.brokerName,
       brokerCommission: purchaseData.brokeragePercentage,
       billNumber: billNumber,
-      pststus: paymentStatus,
+      paymentStatus: paymentStatus,
       purchaseDate: purchaseData.purchaseDate || Date.now(),
     });
 
@@ -324,7 +324,7 @@ exports.DirectPurchase = async (req, res) => {
       amountPaid: paidAmount,
       DAmount: dueAmount,
       billNumber: billNumber,
-      pststus: paymentStatus,
+      paymentStatus: paymentStatus,
       purchaseDate: purchaseData.purchaseDate || Date.now(),
     });
 
