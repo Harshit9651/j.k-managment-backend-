@@ -119,6 +119,111 @@ exports.MandiPurchase = async (req, res) => {
   }
 };
 
+// exports.BrokerPurchase = async (req, res) => {
+//   try {
+//     const purchaseData = req.body;
+
+//     // Generate a unique bill number
+//     const billNumber = `BILL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+//     const dueAmount = purchaseData.totalPayment - purchaseData.paidAmount;
+// console.log(purchaseData.dueAmount ,"due amount")
+// console.log(purchaseData.totalPrice)
+// if (purchaseData.paymentStatus == 'Pending') {
+//   purchaseData.paymentStatus = "Partially Paid";
+// }
+
+
+
+//     const newBrokerPurchase = new BrokerPurchase({
+//       itemType: purchaseData.itemType,
+//       quantity: purchaseData.quantity,
+//       weight: purchaseData.weight,
+//       add: purchaseData.add || 0,
+//       less: purchaseData.less || 0,
+//       pricePerUnit: purchaseData.pricePerUnit,
+//       ttlprice: purchaseData.totalPayment,
+//       amountPaid: purchaseData.paidAmount || 0,
+//       DAmount:dueAmount,
+//       brokerName: purchaseData.brokerName,
+//       brokerCommission: purchaseData. brokeragePercentage,
+//       billNumber: billNumber,
+//       pststus: paymentStatus,
+//       purchaseDate: purchaseData.purchaseDate || Date.now(),
+//     });
+
+//     const savedBrokerPurchase = await newBrokerPurchase.save();
+//     console.log(savedBrokerPurchase);
+
+//     return res.status(201).json({
+//       success: true,
+//       message: "Broker purchase saved successfully!",
+//       data: savedBrokerPurchase,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error saving broker purchase",
+//       error: error.message,
+//     });
+//   }
+// };
+
+
+// exports.DirectPurchase = async (req, res) => {
+//   try {
+//     const purchaseData = req.body;
+
+    
+//     const billNumber = `BILL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+
+//     const dueAmount = purchaseData.totalPayment - purchaseData.paidAmount;
+//     console.log(`total amount is ${purchaseData. totalPayment}`)
+//     console.log(`paid amount is ${purchaseData.paidAmount}`)
+// console.log(dueAmount)
+// if (purchaseData.paymentStatus == 'Pending') {
+//   purchaseData.paymentStatus = "Partially Paid";
+// }
+
+
+
+//     const newDirectPurchase = new DirectPurchase({
+//       dealerName: purchaseData.dealerName,
+//       itemType: purchaseData.itemType,
+//       quantity: purchaseData.quantity,
+//       weight: purchaseData.weight,
+//       add: purchaseData.add || 0,
+//       less: purchaseData.less || 0,
+//       pricePerUnit: purchaseData.pricePerUnit,
+//       ttlprice: purchaseData.totalPayment ,
+//       amountPaid: purchaseData.paidAmount || 0,
+//       DAmount: purchaseData.dueAmount,
+//       billNumber: billNumber,
+//       pststus: paymentStatus,
+//       purchaseDate: purchaseData.purchaseDate || Date.now(),
+//     });
+
+//     const savedDirectPurchase = await newDirectPurchase.save();
+//     console.log(savedDirectPurchase);
+
+//     return res.status(201).json({
+//       success: true,
+//       message: "Direct purchase saved successfully!",
+//       data: savedDirectPurchase,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error saving direct purchase",
+//       error: error.message,
+//     });
+//   }
+// };
+
+
+
 exports.BrokerPurchase = async (req, res) => {
   try {
     const purchaseData = req.body;
@@ -126,15 +231,25 @@ exports.BrokerPurchase = async (req, res) => {
     // Generate a unique bill number
     const billNumber = `BILL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    const dueAmount = purchaseData.totalPayment - purchaseData.paidAmount;
-console.log(purchaseData.dueAmount ,"due amount")
-console.log(purchaseData.totalPrice)
-if (purchaseData.paymentStatus == 'Pending') {
-  purchaseData.paymentStatus = "Partially Paid";
-}
+    // Parse payment values and calculate due amount
+    const totalPayment = parseFloat(purchaseData.totalPayment || 0);
+    let paidAmount = parseFloat(purchaseData.paidAmount || 0);
+    let dueAmount = totalPayment - paidAmount;
 
+    // Adjust values based on payment status
+    let paymentStatus = purchaseData.paymentStatus || "Unpaid";
 
+    if (paymentStatus === "Unpaid") {
+      paidAmount = 0;
+      dueAmount = totalPayment;
+    } else if (paymentStatus === "Pending") {
+      paymentStatus = "Partially Paid";
+    } else if (paidAmount >= totalPayment) {
+      paymentStatus = "Paid";
+      dueAmount = 0;
+    }
 
+    // Create new broker purchase document
     const newBrokerPurchase = new BrokerPurchase({
       itemType: purchaseData.itemType,
       quantity: purchaseData.quantity,
@@ -142,16 +257,17 @@ if (purchaseData.paymentStatus == 'Pending') {
       add: purchaseData.add || 0,
       less: purchaseData.less || 0,
       pricePerUnit: purchaseData.pricePerUnit,
-      ttlprice: purchaseData.totalPayment,
-      amountPaid: purchaseData.paidAmount || 0,
-      DAmount:dueAmount,
+      ttlprice: totalPayment,
+      amountPaid: paidAmount,
+      DAmount: dueAmount,
       brokerName: purchaseData.brokerName,
-      brokerCommission: purchaseData. brokeragePercentage,
+      brokerCommission: purchaseData.brokeragePercentage,
       billNumber: billNumber,
-      paymentStatus: purchaseData.paymentStatus || "Unpaid",
+      pststus: paymentStatus,
       purchaseDate: purchaseData.purchaseDate || Date.now(),
     });
 
+    // Save to database
     const savedBrokerPurchase = await newBrokerPurchase.save();
     console.log(savedBrokerPurchase);
 
@@ -170,24 +286,32 @@ if (purchaseData.paymentStatus == 'Pending') {
   }
 };
 
-
 exports.DirectPurchase = async (req, res) => {
   try {
     const purchaseData = req.body;
 
-    
+    // Generate a unique bill number
     const billNumber = `BILL-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-    const dueAmount = purchaseData.totalPayment - purchaseData.paidAmount;
-    console.log(`total amount is ${purchaseData. totalPayment}`)
-    console.log(`paid amount is ${purchaseData.paidAmount}`)
-console.log(dueAmount)
-if (purchaseData.paymentStatus == 'Pending') {
-  purchaseData.paymentStatus = "Partially Paid";
-}
+    // Parse payment values and calculate due amount
+    const totalPayment = parseFloat(purchaseData.totalPayment || 0);
+    let paidAmount = parseFloat(purchaseData.paidAmount || 0);
+    let dueAmount = totalPayment - paidAmount;
 
+    // Adjust values based on payment status
+    let paymentStatus = purchaseData.paymentStatus || "Unpaid";
 
+    if (paymentStatus === "Unpaid") {
+      paidAmount = 0;
+      dueAmount = totalPayment;
+    } else if (paymentStatus === "Pending") {
+      paymentStatus = "Partially Paid";
+    } else if (paidAmount >= totalPayment) {
+      paymentStatus = "Paid";
+      dueAmount = 0;
+    }
 
+    // Create new direct purchase document
     const newDirectPurchase = new DirectPurchase({
       dealerName: purchaseData.dealerName,
       itemType: purchaseData.itemType,
@@ -196,14 +320,15 @@ if (purchaseData.paymentStatus == 'Pending') {
       add: purchaseData.add || 0,
       less: purchaseData.less || 0,
       pricePerUnit: purchaseData.pricePerUnit,
-      ttlprice: purchaseData.totalPayment ,
-      amountPaid: purchaseData.paidAmount || 0,
-      DAmount: purchaseData.dueAmount,
+      ttlprice: totalPayment,
+      amountPaid: paidAmount,
+      DAmount: dueAmount,
       billNumber: billNumber,
-      paymentStatus: purchaseData.paymentStatus || "Unpaid",
+      pststus: paymentStatus,
       purchaseDate: purchaseData.purchaseDate || Date.now(),
     });
 
+    // Save to database
     const savedDirectPurchase = await newDirectPurchase.save();
     console.log(savedDirectPurchase);
 
@@ -221,6 +346,7 @@ if (purchaseData.paymentStatus == 'Pending') {
     });
   }
 };
+
 
 exports.getAllDirectPurchases = async (req, res) => {
   try {
