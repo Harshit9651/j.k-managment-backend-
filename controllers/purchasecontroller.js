@@ -33,7 +33,7 @@ exports.MandiPurchase = async (req, res) => {
       // totalPrice: purchaseData.totalPayment,
       ttlprice: purchaseData.totalPayment,
       dueamount: dueAmountp,
-      paymentStatus: purchaseData.paymentStatus || "Unpaid",
+      paymentStatus: purchaseData.paymentStatus,
       Dhami: purchaseData.dami || 2.5,
       pal: purchaseData.pal || 4,
     });
