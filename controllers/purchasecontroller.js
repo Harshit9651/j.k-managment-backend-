@@ -14,6 +14,7 @@ exports.MandiPurchase = async (req, res) => {
     console.log(dueAmountp);
     console.log(purchaseData.paidAmount);
     console.log(purchaseData.totalPayment);
+    console.log(`hy the payments ststus is : ${purchaseData.paymentStatus}`)
     if (purchaseData.paymentStatus == 'Pending') {
       purchaseData.paymentStatus = "Partially Paid";
     }
