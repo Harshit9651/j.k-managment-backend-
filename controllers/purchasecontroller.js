@@ -3,22 +3,85 @@ const BrokerPurchase = require("../models/brokerpurchaseModel");
 const DirectPurchase = require("../models/directpurchaseModel");
 const SuspanceModel = require("../models/suspanceModel")
 const mongoose = require("mongoose");
+// exports.MandiPurchase = async (req, res) => {
+//   try {
+//     const purchaseData = req.body;
+
+//     const receiptNumber = `BILL-${Date.now()}-${Math.floor(
+//       Math.random() * 1000
+//     )}`;
+//     const dueAmountp = purchaseData.totalPayment - purchaseData.paidAmount;
+//     console.log(dueAmountp);
+//     console.log(purchaseData.paidAmount);
+//     console.log(purchaseData.totalPayment);
+//     console.log(`hy the payments ststus is : ${purchaseData.paymentStatus}`)
+//     if (purchaseData.paymentStatus == 'Pending') {
+//       purchaseData.paymentStatus = "Partially Paid";
+//     }
+    
+//     const newPurchase = new MandiPurcahse({
+//       DelarName: purchaseData.DelarName,
+//       itemType: purchaseData.itemType,
+//       weight: purchaseData.weight,
+//       quantity: purchaseData.quantity,
+//       pricePerUnit: purchaseData.pricePerUnit,
+//       purchaseDate: purchaseData.purchaseDate,
+//       less: purchaseData.less || 0,
+//       add: purchaseData.add || 0,
+//       receiptNumber: receiptNumber,
+//       amountPaid: purchaseData.paidAmount || 0,
+//       // totalPrice: purchaseData.totalPayment,
+//       ttlprice: purchaseData.totalPayment,
+//       dueamount: dueAmountp,
+//       pststus:purchaseData.paymentStatus,
+//       Dhami: purchaseData.dami || 2.5,
+//       pal: purchaseData.pal || 4,
+//     });
+
+//     const savePurcaheData = await newPurchase.save();
+//     console.log(savePurcaheData);
+//     return res.status(201).json({
+//       success: true,
+//       message: "Purchase saved successfully!",
+//       data: newPurchase,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Error saving purchase",
+//       error: error.message,
+//     });
+//   }
+// };
 exports.MandiPurchase = async (req, res) => {
   try {
     const purchaseData = req.body;
 
+    // Generate receipt number
     const receiptNumber = `BILL-${Date.now()}-${Math.floor(
       Math.random() * 1000
     )}`;
-    const dueAmountp = purchaseData.totalPayment - purchaseData.paidAmount;
-    console.log(dueAmountp);
-    console.log(purchaseData.paidAmount);
-    console.log(purchaseData.totalPayment);
-    console.log(`hy the payments ststus is : ${purchaseData.paymentStatus}`)
-    if (purchaseData.paymentStatus == 'Pending') {
-      purchaseData.paymentStatus = "Partially Paid";
+
+    // Parse payment values and calculate due amount
+    const totalPayment = parseFloat(purchaseData.totalPayment || 0);
+    let paidAmount = parseFloat(purchaseData.paidAmount || 0);
+    let dueAmount = totalPayment - paidAmount;
+
+    // Adjust values based on payment status
+    let paymentStatus = purchaseData.paymentStatus || "Unpaid";
+
+    if (paymentStatus === "Unpaid") {
+      paidAmount = 0;
+      dueAmount = totalPayment;
+    } else if (paymentStatus === "Pending") {
+      paymentStatus = "Partially Paid";
+    } else if (paidAmount >= totalPayment) {
+      paymentStatus = "Paid";
+      dueAmount = 0;
     }
-    
+
+    // Create new purchase document
     const newPurchase = new MandiPurcahse({
       DelarName: purchaseData.DelarName,
       itemType: purchaseData.itemType,
@@ -29,21 +92,22 @@ exports.MandiPurchase = async (req, res) => {
       less: purchaseData.less || 0,
       add: purchaseData.add || 0,
       receiptNumber: receiptNumber,
-      amountPaid: purchaseData.paidAmount || 0,
-      // totalPrice: purchaseData.totalPayment,
-      ttlprice: purchaseData.totalPayment,
-      dueamount: dueAmountp,
-      paymentStatus: purchaseData.paymentStatus,
-      Dhami: purchaseData.dami || 2.5,
+      amountPaid: paidAmount,
+      ttlprice: totalPayment,
+      dueamount: dueAmount,
+      pststus: paymentStatus,
+      Dhami: purchaseData.Dhami || 2.5,
       pal: purchaseData.pal || 4,
     });
 
-    const savePurcaheData = await newPurchase.save();
-    console.log(savePurcaheData);
+    // Save to database
+    const savePurchaseData = await newPurchase.save();
+    console.log(savePurchaseData);
+
     return res.status(201).json({
       success: true,
       message: "Purchase saved successfully!",
-      data: newPurchase,
+      data: savePurchaseData,
     });
   } catch (error) {
     console.error(error);

@@ -63,11 +63,11 @@ const purchaseSchema = new mongoose.Schema({
     required: true,
     unique: true, // Ensure each receipt number is unique
   },
-  paymentStatus: {
-    type: String,
-    enum: ["Paid", "Unpaid", "Partially Paid"],
-    default: "Unpaid",
-  },
+pststus:{
+  type: String,
+  enum: ["Paid", "Unpaid", "Partially Paid"],
+  default: "Unpaid",
+},
   amountPaid: {
     type: Number,
     default: 0,
